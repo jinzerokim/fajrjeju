@@ -54,5 +54,4 @@ jobs:
           image: ${{ env.IMAGE }}:${{ github.sha }}
           env_vars: |
             NODE_ENV=production
-          secrets: |
-            SUPABASE_SERVICE_ROLE_KEY=SUPABASE_SERVICE_ROLE_KEY:latest
+            SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
