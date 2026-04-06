@@ -19,11 +19,12 @@ export default async function MusallaPage({
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang);
   const locale = lang as Locale;
+  const m = dict.musalla;
 
   return (
     <>
       {/* ── Hero ── */}
-      <section className="relative h-[360px] sm:h-[440px]">
+      <section className="relative h-[420px] sm:h-[500px]">
         <Image
           src="/images/donation/KakaoTalk_20250407_101913274_01.jpg"
           alt="Al-Fajr Pyoseon Musalla"
@@ -32,123 +33,68 @@ export default async function MusallaPage({
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-fj-walnut/80 via-fj-walnut/35 to-fj-walnut/10" />
-        <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-end px-5 pb-12">
+        <div className="absolute inset-0 bg-gradient-to-t from-fj-walnut/85 via-fj-walnut/40 to-transparent" />
+        <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-end px-5 pb-14">
           <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white/90 backdrop-blur-sm">
             <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M5.05 4.05a7 7 0 1 1 9.9 9.9L10 18.9l-4.95-4.95a7 7 0 0 1 0-9.9ZM10 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" clipRule="evenodd" />
             </svg>
-            {dict.musalla.badge}
+            {m.badge}
           </span>
-          <h1 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            {dict.musalla.title}
+          <h1 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+            {m.title}
           </h1>
-          <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-white/75">
-            {dict.musalla.subtitle}
+          <p className="mt-3 max-w-lg text-base leading-relaxed text-white/70">
+            {m.subtitle}
           </p>
         </div>
       </section>
 
-      {/* ── Prayer Info ── */}
+      {/* ── Prayer Info Bar ── */}
       <section className="border-b border-fj-border bg-fj-bg">
         <div className="mx-auto grid max-w-6xl grid-cols-1 divide-y divide-fj-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {/* Next Prayer */}
-          <div className="flex items-center gap-4 px-5 py-5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-fj-gold/10">
-              <svg className="h-5 w-5 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-fj-muted">{dict.musalla.prayer.nextPrayer}</p>
-              <p className="text-sm font-bold text-fj-dark">{dict.musalla.prayer.placeholder}</p>
-            </div>
-          </div>
-          {/* Qibla */}
-          <div className="flex items-center gap-4 px-5 py-5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-fj-gold/10">
-              <svg className="h-5 w-5 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1M4.22 4.22l.7.7m12.16 12.16.7.7M3 12h1m16 0h1M4.22 19.78l.7-.7M18.36 5.64l.7-.7M12 7a5 5 0 1 1 0 10A5 5 0 0 1 12 7Z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-fj-muted">{dict.musalla.prayer.qibla}</p>
-              <p className="text-sm font-bold text-fj-dark">259° W</p>
-            </div>
-          </div>
-          {/* Facility */}
-          <div className="flex items-center gap-4 px-5 py-5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-fj-gold/10">
-              <svg className="h-5 w-5 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-wider text-fj-muted">{dict.musalla.prayer.title}</p>
-              <p className="text-sm font-bold text-fj-dark">{dict.musalla.prayer.facility}</p>
-            </div>
-          </div>
+          <InfoCell icon={<ClockIcon />} label={m.prayer.nextPrayer} value={m.prayer.placeholder} />
+          <InfoCell icon={<CompassIcon />} label={m.prayer.qibla} value="259° W" />
+          <InfoCell icon={<HomeIcon />} label={m.prayer.title} value={m.prayer.facility} />
         </div>
       </section>
 
-      {/* ── Space Gallery ── */}
+      {/* ── Space Gallery + Facilities ── */}
       <section className="bg-fj-bg">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
-          <div className="flex items-center gap-3">
-            <div className="h-px w-8 bg-fj-gold" />
-            <h2 className="text-lg font-bold text-fj-dark">{dict.musalla.space.title}</h2>
-            <div className="h-px w-8 bg-fj-gold" />
-          </div>
+          <SectionHeading>{m.space.title}</SectionHeading>
 
-          <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {["_01", "_02", "_03", "_04"].map((suffix) => (
+          <div className="mt-10 grid grid-cols-2 grid-rows-2 gap-3 sm:grid-cols-3">
+            <div className="relative col-span-1 row-span-2 overflow-hidden rounded-xl ring-1 ring-fj-border sm:aspect-auto">
+              <Image
+                src="/images/donation/KakaoTalk_20250407_121758416_01.jpg"
+                alt="Musalla prayer hall"
+                fill
+                sizes="(max-width: 640px) 50vw, 33vw"
+                className="object-cover transition-transform duration-300 hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
+              />
+            </div>
+            {["_02", "_03", "_04"].map((suffix) => (
               <div key={suffix} className="relative aspect-square overflow-hidden rounded-xl ring-1 ring-fj-border">
                 <Image
                   src={`/images/donation/KakaoTalk_20250407_121758416${suffix}.jpg`}
-                  alt="Musalla interior"
+                  alt={`Musalla interior ${suffix.replace("_0", "")}`}
                   fill
-                  sizes="(max-width: 640px) 50vw, 25vw"
-                  className="object-cover"
+                  sizes="(max-width: 640px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-300 hover:scale-105 motion-reduce:transition-none motion-reduce:hover:scale-100"
                 />
               </div>
             ))}
           </div>
 
-          <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-xl border border-fj-border bg-fj-bg p-5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-fj-gold/10">
-                <svg className="h-4 w-4 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                </svg>
-              </div>
-              <p className="mt-3 text-[13px] font-medium text-fj-dark">{dict.musalla.space.sistersArea}</p>
-            </div>
-            <div className="rounded-xl border border-fj-border bg-fj-bg p-5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-fj-gold/10">
-                <svg className="h-4 w-4 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-                </svg>
-              </div>
-              <p className="mt-3 text-[13px] font-medium text-fj-dark">{dict.musalla.space.restrooms}</p>
-            </div>
-            <div className="rounded-xl border border-fj-border bg-fj-bg p-5">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-fj-gold/10">
-                <svg className="h-4 w-4 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 20.488l-.023.5a.5.5 0 0 1-.5.5H9.523a.5.5 0 0 1-.5-.5l-.023-.5m6 0a48.108 48.108 0 0 0-6 0m6 0l.036-.72c.037-.744-.35-1.442-1.005-1.747A4.5 4.5 0 0 0 12 17.75a4.5 4.5 0 0 0-2.531.77c-.655.306-1.042 1.004-1.005 1.748l.036.72" />
-                </svg>
-              </div>
-              <p className="mt-3 text-[13px] font-medium text-fj-dark">{dict.musalla.space.kitchen}</p>
-            </div>
-          </div>
-
-          <div className="mt-5 flex flex-wrap gap-2">
-            {[
-              dict.musalla.space.specs.land,
-              dict.musalla.space.specs.floor,
-              dict.musalla.space.specs.floor1,
-              dict.musalla.space.specs.south,
-            ].map((spec) => (
-              <span key={spec} className="rounded-full bg-fj-gold/10 px-3 py-1 text-[12px] font-semibold text-fj-walnut">
+          {/* Facility checklist + spec badges — one horizontal row */}
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <FacilityChip>{m.space.sistersArea}</FacilityChip>
+            <FacilityChip>{m.space.restrooms}</FacilityChip>
+            <FacilityChip>{m.space.kitchen}</FacilityChip>
+            <span className="mx-1 hidden h-4 w-px bg-fj-border sm:block" />
+            {Object.values(m.space.specs).map((spec) => (
+              <span key={spec} className="rounded-full bg-fj-gold/10 px-3 py-1.5 text-[12px] font-semibold text-fj-walnut">
                 {spec}
               </span>
             ))}
@@ -160,28 +106,20 @@ export default async function MusallaPage({
       <section className="relative bg-fj-surface">
         <div className="bg-pattern-islamic absolute inset-0 opacity-[0.35]" />
         <div className="relative mx-auto max-w-6xl px-5 py-16 sm:py-20">
-          <div className="flex items-center gap-3">
-            <div className="h-px w-8 bg-fj-gold" />
-            <h2 className="text-lg font-bold text-fj-dark">{dict.musalla.community.title}</h2>
-            <div className="h-px w-8 bg-fj-gold" />
-          </div>
-          <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-fj-muted">
-            {dict.musalla.community.desc}
+          <SectionHeading>{m.community.title}</SectionHeading>
+          <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-fj-dark/70">
+            {m.community.desc}
           </p>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-3">
-            {[
-              dict.musalla.community.placeholder1,
-              dict.musalla.community.placeholder2,
-              dict.musalla.community.placeholder3,
-            ].map((title) => (
-              <div key={title} className="rounded-xl border border-fj-border bg-fj-bg p-5 transition-shadow hover:shadow-md">
-                <div className="flex items-center gap-2">
-                  <span className="rounded bg-fj-gold/10 px-2 py-0.5 text-[10px] font-semibold text-fj-walnut">
-                    {dict.musalla.community.title}
-                  </span>
+            {[m.community.placeholder1, m.community.placeholder2, m.community.placeholder3].map((title) => (
+              <div key={title} className="rounded-xl border border-fj-border bg-fj-bg p-6">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-fj-gold/10">
+                  <svg className="h-4 w-4 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                  </svg>
                 </div>
-                <p className="mt-2.5 text-[14px] font-medium leading-snug text-fj-dark">{title}</p>
+                <p className="mt-4 text-[14px] font-medium leading-snug text-fj-dark">{title}</p>
               </div>
             ))}
           </div>
@@ -191,43 +129,35 @@ export default async function MusallaPage({
       {/* ── Location ── */}
       <section className="bg-fj-bg">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
-          <div className="flex items-center gap-3">
-            <div className="h-px w-8 bg-fj-gold" />
-            <h2 className="text-lg font-bold text-fj-dark">{dict.location.title}</h2>
-            <div className="h-px w-8 bg-fj-gold" />
-          </div>
+          <SectionHeading>{dict.location.title}</SectionHeading>
 
-          <div className="mt-10 grid gap-8 sm:grid-cols-2">
+          <div className="mt-10 grid items-center gap-10 sm:grid-cols-2">
             <div>
-              <p className="text-[14px] leading-relaxed text-fj-dark">{dict.location.address}</p>
-              <div className="mt-5 flex flex-wrap gap-3">
+              <p className="text-[15px] leading-relaxed text-fj-dark/70">{dict.location.address}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
                 <a
-                  href="https://map.kakao.com/link/search/제주특별자치도 서귀포시 표선면 표선동서로 31"
+                  href="https://map.kakao.com/?q=서귀포시 표선면 표선동서로 31"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-fj-gold/10 px-4 py-2.5 text-[13px] font-semibold text-fj-walnut transition-colors hover:bg-fj-gold/20"
+                  aria-label="KakaoMap (opens in new tab)"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-fj-border px-4 py-2.5 text-[13px] font-medium text-fj-dark transition-colors hover:bg-fj-surface"
                 >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
                   KakaoMap
+                  <ExternalIcon />
                 </a>
                 <a
-                  href="https://maps.google.com/?q=제주특별자치도 서귀포시 표선면 표선동서로 31"
+                  href="https://www.google.com/maps/search/?api=1&query=33.3255,126.8363"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-fj-border bg-fj-bg px-4 py-2.5 text-[13px] font-semibold text-fj-dark transition-colors hover:bg-fj-surface"
+                  aria-label="Google Maps (opens in new tab)"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-fj-border px-4 py-2.5 text-[13px] font-medium text-fj-dark transition-colors hover:bg-fj-surface"
                 >
-                  <svg className="h-4 w-4 text-fj-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
                   Google Maps
+                  <ExternalIcon />
                 </a>
               </div>
             </div>
-            <div className="relative aspect-video overflow-hidden rounded-xl ring-1 ring-fj-border">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-xl ring-1 ring-fj-border">
               <Image
                 src="/images/donation/exterior-road.png"
                 alt="Musalla exterior"
@@ -240,21 +170,90 @@ export default async function MusallaPage({
         </div>
       </section>
 
-      {/* ── Fund Banner ── */}
-      <section className="bg-fj-walnut">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 py-16 text-center sm:flex-row sm:justify-between sm:text-left">
+      {/* ── Transparency Banner ── */}
+      <section className="bg-fj-bg">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 py-12 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>
-            <h2 className="text-xl font-bold text-white">{dict.musalla.fund.title}</h2>
-            <p className="mt-1 text-[14px] text-white/60">{dict.musalla.fund.desc}</p>
+            <h2 className="text-base font-bold text-fj-dark">{m.fund.title}</h2>
+            <p className="mt-1 text-[14px] text-fj-dark/70">{m.fund.desc}</p>
           </div>
           <Link
             href={`/${locale}/musalla/fund`}
-            className="shrink-0 rounded-lg bg-fj-gold px-6 py-3 text-sm font-semibold text-fj-dark transition-colors hover:bg-fj-gold-light"
+            className="shrink-0 rounded-lg border border-fj-border bg-fj-bg px-5 py-2.5 text-[13px] font-medium text-fj-dark transition-colors hover:bg-fj-surface"
           >
-            {dict.musalla.fund.cta}
+            {m.fund.cta} →
           </Link>
         </div>
       </section>
     </>
+  );
+}
+
+/* ── Shared sub-components ── */
+
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="h-px w-8 bg-fj-gold" />
+      <h2 className="text-lg font-bold text-fj-dark">{children}</h2>
+      <div className="h-px w-8 bg-fj-gold" />
+    </div>
+  );
+}
+
+function InfoCell({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-4 px-5 py-5">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-fj-gold/10">
+        {icon}
+      </div>
+      <div>
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-fj-muted">{label}</p>
+        <p className="text-sm font-bold text-fj-dark">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function FacilityChip({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-fj-border bg-fj-surface px-3 py-1.5 text-[12px] font-medium text-fj-dark">
+      <svg className="h-3 w-3 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+      </svg>
+      {children}
+    </span>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg className="h-5 w-5 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
+  );
+}
+
+function CompassIcon() {
+  return (
+    <svg className="h-5 w-5 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="m6.115 5.19.319 1.913A6 6 0 0 0 8.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 0 0 2.288-4.042 1.087 1.087 0 0 0-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 0 1-.98-.314l-.295-.295a1.125 1.125 0 0 1 0-1.591l.13-.132a1.125 1.125 0 0 1 1.3-.21l.603.302a.809.809 0 0 0 1.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 0 0 1.528-1.732l.146-.292M6.115 5.19A9 9 0 1 0 17.18 4.64M6.115 5.19A8.965 8.965 0 0 1 12 3c1.929 0 3.716.607 5.18 1.64" />
+    </svg>
+  );
+}
+
+function HomeIcon() {
+  return (
+    <svg className="h-5 w-5 text-fj-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+    </svg>
+  );
+}
+
+function ExternalIcon() {
+  return (
+    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3" />
+    </svg>
   );
 }

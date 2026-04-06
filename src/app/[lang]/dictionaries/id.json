@@ -1,10 +1,7 @@
 {
   "nav": {
     "home": "Beranda",
-    "about": "Tentang",
-    "fund": "Dana Musala",
-    "community": "Komunitas",
-    "contact": "Kontak"
+    "musalla": "Al-Fajr Pyoseon"
   },
   "hero": {
     "badge": "Pulau Jeju, Korea Selatan",
@@ -14,17 +11,15 @@
   "info": {
     "nextPrayer": "Salat Berikutnya",
     "prayerPlaceholder": "Segera hadir",
-    "locationShort": "Pyoseon, Seogwipo"
+    "locationShort": "Pyoseon, Seogwipo",
+    "musallaLink": "Al-Fajr Pyoseon →"
   },
   "mission": {
     "label": "Misi Kami",
     "title": "Rumah bagi setiap Muslim di Jeju",
-    "desc": "Ratusan pekerja dan keluarga Muslim tinggal di seluruh Pulau Jeju, banyak yang jauh dari satu-satunya masjid di Kota Jeju. Fajr Jeju hadir untuk menjembatani.",
-    "musalla": "Musala Pyoseon",
-    "musallaDesc": "Ruang salat khusus di Pyoseon, Jeju selatan — 58,9m², menghadap kiblat, terbuka untuk semua. Area akhwat, 2 kamar mandi (1 untuk wudu), dapur kecil."
+    "desc": "Ratusan pekerja dan keluarga Muslim tinggal di seluruh Pulau Jeju, banyak yang jauh dari satu-satunya masjid di Kota Jeju. Fajr Jeju hadir untuk menjembatani — mengelola musala, membangun komunitas, dan menghubungkan Muslim di seluruh pulau."
   },
   "fund": {
-    "label": "Dana Musala Pyoseon",
     "title": "Bantu kami membuka musala",
     "desc": "Setiap donasi langsung digunakan untuk mengamankan dan menyiapkan ruang musala Pyoseon.",
     "cta": "Lihat Buku Donasi"
@@ -44,7 +39,46 @@
     "address": "Lt.1, 31 Pyoseondongseo-ro, Seogwipo-si, Jeju"
   },
   "footer": {
-    "org": "Fajr Jeju — Organisasi komunitas Muslim nirlaba di Pulau Jeju, Korea Selatan",
-    "site": "fajrjeju.com"
+    "org": "Fajr Jeju — Organisasi komunitas Muslim nirlaba",
+    "rep": "Ketua: Nasir Seong (성홍석)",
+    "taxId": "No. Reg. 000-00-00000",
+    "address": "Lt.1, 31 Pyoseondongseo-ro, Seogwipo-si, Jeju",
+    "email": "support@fajrjeju.com"
+  },
+  "musalla": {
+    "title": "Musala Al-Fajr Pyoseon",
+    "subtitle": "Ruang salat & pusat komunitas",
+    "badge": "Jeju Selatan",
+    "prayer": {
+      "title": "Salat",
+      "nextPrayer": "Salat Berikutnya",
+      "placeholder": "Segera hadir",
+      "qibla": "Menghadap kiblat",
+      "facility": "58,9m² — terbuka untuk semua"
+    },
+    "space": {
+      "title": "Ruang Kami",
+      "sistersArea": "Area akhwat di belakang",
+      "restrooms": "2 kamar mandi (1 untuk wudu)",
+      "kitchen": "Dapur kecil + ruang utilitas",
+      "specs": {
+        "land": "Lahan 601m²",
+        "floor": "58,9m²",
+        "floor1": "Lt.1",
+        "south": "Menghadap selatan"
+      }
+    },
+    "community": {
+      "title": "Komunitas",
+      "desc": "Tempat berkumpul Muslim di Jeju selatan — salat, iftar, kelas, dan saling membantu.",
+      "placeholder1": "Kumpul iftar komunitas",
+      "placeholder2": "Halaqah Al-Quran",
+      "placeholder3": "Pertemuan sambutan Muslim baru"
+    },
+    "fund": {
+      "title": "Bantu bangun ruang ini",
+      "desc": "Setiap won yang masuk dan keluar — sepenuhnya transparan.",
+      "cta": "Lihat Buku Donasi"
+    }
   }
 }

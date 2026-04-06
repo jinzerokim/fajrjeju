@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { hasLocale } from "../../dictionaries";
 import { DonationLedger } from "@/components/donation-ledger";
 
 export const metadata: Metadata = {
@@ -10,6 +12,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function FundPage() {
-  return <DonationLedger />;
+export default async function FundPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+
+  return <DonationLedger lang={lang} />;
 }

@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Inter, Noto_Sans_Arabic } from "next/font/google";
-import Link from "next/link";
-import { locales, localeNames, isRtl } from "@/lib/i18n";
+import { Inter, Noto_Sans_Arabic, Kufam } from "next/font/google";
+import { locales, isRtl } from "@/lib/i18n";
 import type { Locale } from "@/lib/i18n";
 import { hasLocale, getDictionary } from "./dictionaries";
+import { SiteHeader } from "@/components/site-header";
 import "../globals.css";
 
 const inter = Inter({
@@ -17,6 +17,13 @@ const notoArabic = Noto_Sans_Arabic({
   variable: "--font-arabic",
   subsets: ["arabic"],
   weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+const kufam = Kufam({
+  variable: "--font-kufam",
+  subsets: ["latin"],
+  weight: ["700"],
   display: "swap",
 });
 
@@ -49,48 +56,32 @@ export default async function LangLayout({
   const dict = await getDictionary(locale);
 
   return (
-    <html lang={locale} dir={dir} className={`${inter.variable} ${notoArabic.variable} h-full antialiased`}>
+    <html lang={locale} dir={dir} className={`${inter.variable} ${notoArabic.variable} ${kufam.variable} h-full scroll-smooth antialiased`}>
       <body className="min-h-full flex flex-col bg-fj-bg font-sans text-fj-text">
-        {/* ── Header ── */}
-        <header className="sticky top-0 z-50 bg-fj-bg/95 backdrop-blur-sm">
-          <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
-            <Link href={`/${locale}`} className="text-lg font-bold tracking-tight text-fj-dark">
-              Fajr Jeju
-            </Link>
-            <nav className="hidden items-center gap-8 text-[13px] font-medium text-fj-muted sm:flex">
-              <Link href={`/${locale}/musalla`} className="transition-colors hover:text-fj-dark">
-                {dict.nav.musalla}
-              </Link>
-            </nav>
-            <div className="flex items-center gap-0.5 text-[11px] text-fj-muted">
-              {locales.map((l) => (
-                <Link
-                  key={l}
-                  href={`/${l}`}
-                  className={`rounded px-1.5 py-0.5 transition-colors ${l === locale ? "bg-fj-dark text-white" : "hover:bg-fj-surface"}`}
-                >
-                  {localeNames[l]}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="h-px bg-gradient-to-r from-transparent via-fj-gold/40 to-transparent" />
-        </header>
+        {/* ── Skip to content ── */}
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-fj-dark focus:px-4 focus:py-2 focus:text-white">
+          Skip to content
+        </a>
 
-        <main className="flex-1">
+        {/* ── Header ── */}
+        <SiteHeader locale={locale} musallaLabel={dict.nav.musalla} />
+
+        <main id="main-content" className="flex-1">
           {children}
         </main>
 
         {/* ── Footer ── */}
         <footer className="bg-fj-surface">
           <div className="h-px bg-gradient-to-r from-transparent via-fj-gold/30 to-transparent" />
-          <div className="mx-auto max-w-6xl px-5 py-8">
-            <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <div>
-                <p className="text-sm font-semibold text-fj-dark">Fajr Jeju</p>
-                <p className="mt-1 text-[12px] text-fj-muted">{dict.footer.org}</p>
-              </div>
-              <p className="text-[11px] text-fj-muted">{dict.footer.site}</p>
+          <div className="mx-auto max-w-6xl px-5 py-6">
+            <div className="flex flex-col gap-3 text-[12px] text-fj-dark/70 sm:flex-row sm:items-baseline sm:justify-between">
+              <p>
+                <span className="font-bold text-fj-dark" style={{ fontFamily: "var(--font-kufam), var(--font-sans)" }}>Fajr Jeju</span>
+                <span className="mx-1.5 text-fj-border">·</span>{dict.footer.rep}
+                <span className="mx-1.5 text-fj-border">·</span>
+                <a href="mailto:support@fajrjeju.com" className="underline decoration-fj-border underline-offset-2 transition-colors hover:text-fj-dark">{dict.footer.email}</a>
+              </p>
+              <p className="text-fj-muted">{dict.footer.taxId}</p>
             </div>
           </div>
         </footer>

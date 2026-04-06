@@ -1,10 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "about": "About",
-    "fund": "Musalla Fund",
-    "community": "Community",
-    "contact": "Contact"
+    "musalla": "Al-Fajr Pyoseon"
   },
   "hero": {
     "badge": "Jeju Island, South Korea",
@@ -14,17 +11,15 @@
   "info": {
     "nextPrayer": "Next Prayer",
     "prayerPlaceholder": "Coming soon",
-    "locationShort": "Pyoseon, Seogwipo"
+    "locationShort": "Pyoseon, Seogwipo",
+    "musallaLink": "Al-Fajr Pyoseon →"
   },
   "mission": {
     "label": "Our Mission",
     "title": "A home for every Muslim in Jeju",
-    "desc": "Hundreds of Muslim workers and families live across Jeju Island, many far from the only mosque in Jeju City. Fajr Jeju exists to bridge that gap.",
-    "musalla": "Pyoseon Musalla",
-    "musallaDesc": "A dedicated prayer space in Pyoseon, southern Jeju — 58.9m², Qibla-aligned, open to all. Sisters' area, 2 restrooms (1 for wudu), small kitchen."
+    "desc": "Hundreds of Muslim workers and families live across Jeju Island, many far from the only mosque in Jeju City. Fajr Jeju exists to bridge that gap — operating a musalla, building community, and connecting Muslims across the island."
   },
   "fund": {
-    "label": "Pyoseon Musalla Fund",
     "title": "Help us open the musalla",
     "desc": "Every donation goes directly to securing and setting up the Pyoseon musalla space.",
     "cta": "View Donation Ledger"
@@ -44,7 +39,46 @@
     "address": "1F, 31 Pyoseondongseo-ro, Seogwipo-si, Jeju"
   },
   "footer": {
-    "org": "Fajr Jeju — Non-profit Muslim community organization in Jeju Island, South Korea",
-    "site": "fajrjeju.com"
+    "org": "Fajr Jeju — Non-profit Muslim community organization",
+    "rep": "Rep. Nasir Seong (성홍석)",
+    "taxId": "Reg. No. 000-00-00000",
+    "address": "1F, 31 Pyoseondongseo-ro, Seogwipo-si, Jeju",
+    "email": "support@fajrjeju.com"
+  },
+  "musalla": {
+    "title": "Al-Fajr Pyoseon Musalla",
+    "subtitle": "Prayer space & community hub",
+    "badge": "Southern Jeju",
+    "prayer": {
+      "title": "Prayer",
+      "nextPrayer": "Next Prayer",
+      "placeholder": "Coming soon",
+      "qibla": "Qibla-aligned",
+      "facility": "58.9m² — open to all"
+    },
+    "space": {
+      "title": "Our Space",
+      "sistersArea": "Sisters' area in the back",
+      "restrooms": "2 restrooms (1 for wudu)",
+      "kitchen": "Small kitchen + utility room",
+      "specs": {
+        "land": "Land 601m²",
+        "floor": "58.9m²",
+        "floor1": "1F",
+        "south": "South-facing"
+      }
+    },
+    "community": {
+      "title": "Community",
+      "desc": "A gathering place for Muslims in southern Jeju — prayer, iftar, classes, and mutual support.",
+      "placeholder1": "Community iftar gathering",
+      "placeholder2": "Quran study circle",
+      "placeholder3": "New Muslim welcome meetup"
+    },
+    "fund": {
+      "title": "Help build this space",
+      "desc": "Every won raised and spent — fully transparent.",
+      "cta": "View Donation Ledger"
+    }
   }
 }

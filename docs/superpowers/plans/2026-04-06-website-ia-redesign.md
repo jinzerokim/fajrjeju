@@ -12,6 +12,19 @@
 
 **IMPORTANT:** Check `node_modules/next/dist/docs/` before writing any Next.js code. Do not rely on training data patterns.
 
+**DESIGN UPDATE (commit 29f221f):** The codebase now uses a warm Islamic aesthetic. When implementing, use the CURRENT design tokens from `page.tsx`, not the ones in the code blocks below. Key differences:
+- `bg-fj-walnut` replaces `bg-fj-dark` for hero overlays, banners, CTA buttons
+- `bg-fj-bg` (#FDFBF9 warm cream) replaces `bg-white` for page backgrounds
+- Header: no `border-b`, uses `h-px bg-gradient-to-r from-transparent via-fj-gold/40 to-transparent` brass accent line
+- Footer: same brass gradient line, `bg-fj-surface` background
+- Section headings: double brass lines `<div className="h-px w-8 bg-fj-gold" />` on BOTH sides of heading text
+- Card tags: `text-fj-walnut` instead of `text-fj-teal`
+- Announcements section: has `bg-pattern-islamic` overlay with `opacity-[0.35]`
+- Icon colors: `text-fj-gold` for info bar icons (not teal)
+- Images have `ring-1 ring-fj-border` instead of bare rounded
+- Donate button in header: `bg-fj-walnut` not `bg-fj-teal`
+- **Reference `src/app/[lang]/page.tsx` for exact class names and patterns**
+
 ---
 
 ## Task 1: Update dictionary files with new keys

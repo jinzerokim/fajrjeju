@@ -26,7 +26,7 @@ export default async function HomePage({
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-fj-walnut/80 via-fj-walnut/35 to-fj-walnut/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-fj-walnut/85 via-fj-walnut/40 to-transparent" />
         <div className="relative mx-auto flex h-full max-w-6xl flex-col justify-end px-5 pb-12">
           <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white/90 backdrop-blur-sm">
             <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
@@ -37,7 +37,7 @@ export default async function HomePage({
           <h1 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {dict.hero.title}
           </h1>
-          <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-white/75">
+          <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-white/70">
             {dict.hero.subtitle}
           </p>
         </div>
@@ -80,7 +80,7 @@ export default async function HomePage({
             </div>
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-wider text-fj-muted">{dict.nav.musalla}</p>
-              <p className="text-sm font-bold text-fj-gold">{dict.info.musallaLink}</p>
+              <p className="text-sm font-bold text-fj-gold-dark">{dict.info.musallaLink}</p>
             </div>
           </Link>
         </div>
@@ -94,7 +94,7 @@ export default async function HomePage({
             <h2 className="text-lg font-bold text-fj-dark">{dict.mission.title}</h2>
             <div className="h-px w-8 bg-fj-gold" />
           </div>
-          <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-fj-muted">
+          <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-fj-dark/70">
             {dict.mission.desc}
           </p>
         </div>
@@ -130,18 +130,18 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* ── Donation Banner — walnut + brass ── */}
-      <section className="bg-fj-walnut">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 py-16 text-center sm:flex-row sm:justify-between sm:text-left">
+      {/* ── Transparency Banner ── */}
+      <section className="bg-fj-bg">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 py-12 text-center sm:flex-row sm:justify-between sm:text-left">
           <div>
-            <h2 className="text-xl font-bold text-white">{dict.fund.title}</h2>
-            <p className="mt-1 text-[14px] text-white/60">{dict.fund.desc}</p>
+            <h2 className="text-base font-bold text-fj-dark">{dict.fund.title}</h2>
+            <p className="mt-1 text-[14px] text-fj-dark/70">{dict.fund.desc}</p>
           </div>
           <Link
             href={`/${locale}/musalla/fund`}
-            className="shrink-0 rounded-lg bg-fj-gold px-6 py-3 text-sm font-semibold text-fj-dark transition-colors hover:bg-fj-gold-light"
+            className="shrink-0 rounded-lg border border-fj-border bg-fj-bg px-5 py-2.5 text-[13px] font-medium text-fj-dark transition-colors hover:bg-fj-surface"
           >
-            {dict.fund.cta}
+            {dict.fund.cta} →
           </Link>
         </div>
       </section>
@@ -152,7 +152,7 @@ export default async function HomePage({
 /* ── Notice Card ── */
 function NoticeCard({ date, title, tag }: { date: string; title: string; tag: string }) {
   return (
-    <div className="rounded-xl border border-fj-border bg-fj-bg p-5 transition-shadow hover:shadow-md">
+    <div className="cursor-pointer rounded-xl border border-fj-border bg-fj-bg p-5 transition-shadow hover:shadow-md">
       <div className="flex items-center gap-2">
         <span className="rounded bg-fj-gold/10 px-2 py-0.5 text-[10px] font-semibold text-fj-walnut">
           {tag}

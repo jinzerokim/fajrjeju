@@ -112,12 +112,10 @@ const t: Record<DonationLocale, Dict> = {
   },
 };
 
-const localeLabels: Record<DonationLocale, { name: string; short: string }> = {
-  en: { name: "English", short: "EN" },
-  ko: { name: "\ud55c\uad6d\uc5b4", short: "\ud55c" },
-  id: { name: "Indonesia", short: "ID" },
-  ur: { name: "\u0627\u0631\u062f\u0648", short: "\u0627\u0631" },
-};
+function mapLocale(lang: string): DonationLocale {
+  if (lang in t) return lang as DonationLocale;
+  return "en";
+}
 
 interface Transaction {
   date: string;
@@ -128,9 +126,10 @@ interface Transaction {
   type: "\uc785\uae08" | "\ucd9c\uae08";
 }
 
-const lastUpdated = "2026-04-06T00:26:00";
+const lastUpdated = "2026-04-06T15:12:00";
 
 const transactions: Transaction[] = [
+  { date: "2026-04-06", time: "15:12:00", description: "RAZZAQ Z***H", amount: 50000, balance: 4246000, type: "입금" },
   { date: "2026-04-06", time: "00:26:00", description: "ALI M***SSA", amount: 500000, balance: 4196000, type: "\uc785\uae08" },
   { date: "2026-04-05", time: "22:04:00", description: "TALHA M***A", amount: 186000, balance: 3696000, type: "\uc785\uae08" },
   { date: "2026-04-05", time: "19:37:00", description: "KHURSHID S***A", amount: 200000, balance: 3510000, type: "\uc785\uae08" },
@@ -263,35 +262,16 @@ function CopyButton({ text, copiedText, copyText }: { text: string; copiedText: 
   );
 }
 
-function LangSwitcher({ lang, onChange }: { lang: DonationLocale; onChange: (l: DonationLocale) => void }) {
-  return (
-    <div className="flex items-center justify-center gap-1.5 text-xs text-fj-muted" dir="ltr">
-      {donationLocales.map((l) => (
-        <button
-          key={l}
-          type="button"
-          onClick={() => onChange(l)}
-          className={`min-h-[44px] min-w-[44px] rounded cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fj-gold focus-visible:ring-offset-1 ${l === lang ? "bg-fj-dark text-white" : "hover:bg-fj-subtle"}`}
-        >
-          {localeLabels[l].short}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-export function DonationLedger() {
-  const [lang, setLang] = useState<DonationLocale>("en");
+export function DonationLedger({ lang: pageLang }: { lang: string }) {
+  const lang = mapLocale(pageLang);
   const d = t[lang];
   const isRtl = lang === "ur";
-
 
   return (
     <section className="py-16 sm:py-24" dir={isRtl ? "rtl" : "ltr"}>
       <div className="mx-auto max-w-2xl px-4 sm:px-6">
         {/* Header */}
         <div className="text-center">
-          <LangSwitcher lang={lang} onChange={setLang} />
           <h1 className="mt-6 text-3xl font-bold text-fj-dark sm:text-4xl">
             {d.title}
           </h1>
