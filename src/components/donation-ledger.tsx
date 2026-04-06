@@ -193,7 +193,7 @@ function TransactionRow({ tx }: { tx: Transaction }) {
   return (
     <div className="flex items-center justify-between gap-4 py-3.5">
       <div className="flex items-center gap-3 min-w-0">
-        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDeposit ? "bg-fj-teal/10 text-fj-teal" : "bg-fj-gold/15 text-fj-gold"}`}>
+        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDeposit ? "bg-fj-teal/10 text-fj-teal" : "bg-fj-walnut/10 text-fj-walnut"}`}>
           {isDeposit ? <DepositIcon /> : <WithdrawalIcon />}
         </div>
         <div className="min-w-0">
@@ -202,10 +202,10 @@ function TransactionRow({ tx }: { tx: Transaction }) {
         </div>
       </div>
       <div className="shrink-0 text-end" dir="ltr">
-        <span className={`text-sm font-semibold tabular-nums ${isDeposit ? "text-fj-teal" : "text-fj-gold"}`}>
+        <span className={`text-sm font-semibold tabular-nums ${isDeposit ? "text-fj-teal" : "text-fj-walnut"}`}>
           {isDeposit ? "+" : "−"}₩{formatKRW(tx.amount)}
         </span>
-        <p className="text-[11px] tabular-nums text-fj-muted/60">₩{formatKRW(tx.balance)}</p>
+        <p className="text-[11px] tabular-nums text-fj-muted">₩{formatKRW(tx.balance)}</p>
       </div>
     </div>
   );
@@ -213,7 +213,7 @@ function TransactionRow({ tx }: { tx: Transaction }) {
 
 function TransactionList({ transactions, noTxText }: { transactions: Transaction[]; noTxText: string }) {
   if (transactions.length === 0) {
-    return <p className="py-12 text-center text-sm text-fj-muted">{noTxText}</p>;
+    return <p className="py-12 text-center text-sm text-fj-dark/70">{noTxText}</p>;
   }
 
   const grouped: { date: string; label: string; txs: Transaction[] }[] = [];
@@ -251,7 +251,7 @@ function CopyButton({ text, copiedText, copyText }: { text: string; copiedText: 
   return (
     <button
       type="button"
-      className="ms-2 inline-flex items-center rounded px-2.5 py-1.5 text-xs cursor-pointer text-fj-muted transition-colors hover:bg-fj-subtle hover:text-fj-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fj-teal focus-visible:ring-offset-1"
+      aria-live="polite" className="ms-2 min-h-[44px] inline-flex items-center rounded px-2.5 py-1.5 text-xs cursor-pointer text-fj-muted transition-colors hover:bg-fj-subtle hover:text-fj-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fj-gold focus-visible:ring-offset-1"
       onClick={() => {
         navigator.clipboard.writeText(text);
         setCopied(true);
@@ -271,7 +271,7 @@ function LangSwitcher({ lang, onChange }: { lang: DonationLocale; onChange: (l: 
           key={l}
           type="button"
           onClick={() => onChange(l)}
-          className={`min-h-[44px] min-w-[44px] rounded cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fj-teal focus-visible:ring-offset-1 ${l === lang ? "bg-fj-dark text-white" : "hover:bg-fj-subtle"}`}
+          className={`min-h-[44px] min-w-[44px] rounded cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fj-gold focus-visible:ring-offset-1 ${l === lang ? "bg-fj-dark text-white" : "hover:bg-fj-subtle"}`}
         >
           {localeLabels[l].short}
         </button>
@@ -295,7 +295,7 @@ export function DonationLedger() {
           <h1 className="mt-6 text-3xl font-bold text-fj-dark sm:text-4xl">
             {d.title}
           </h1>
-          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-fj-muted">
+          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-fj-dark/70">
             {d.desc}
           </p>
           <div className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full border border-fj-border px-3 py-1">
@@ -345,15 +345,15 @@ export function DonationLedger() {
 
           <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
             <div className="flex items-start gap-3 rounded-lg border border-fj-border px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
-              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-teal/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-gold sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
               <p className="text-[11px] leading-snug text-fj-muted sm:mt-2">{d.sistersArea}</p>
             </div>
             <div className="flex items-start gap-3 rounded-lg border border-fj-border px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
-              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-teal/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4" /><path d="M16 2v4" /><rect x="2" y="4" width="20" height="6" rx="2" /><path d="M2 10v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8" /><path d="M10 16h4" /></svg>
+              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-gold sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4" /><path d="M16 2v4" /><rect x="2" y="4" width="20" height="6" rx="2" /><path d="M2 10v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8" /><path d="M10 16h4" /></svg>
               <p className="text-[11px] leading-snug text-fj-muted sm:mt-2"><span className="text-fj-dark font-medium">{d.restroomsLabel}</span> — {d.restroomsDesc}</p>
             </div>
             <div className="flex items-start gap-3 rounded-lg border border-fj-border px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
-              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-teal/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" /><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4" /><line x1="12" y1="13" x2="12" y2="17" /></svg>
+              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-gold sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" /><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4" /><line x1="12" y1="13" x2="12" y2="17" /></svg>
               <p className="text-[11px] leading-snug text-fj-muted sm:mt-2">{d.kitchenLabel}</p>
             </div>
           </div>
@@ -411,7 +411,7 @@ export function DonationLedger() {
 
         {/* Account */}
         <div className="mt-16 border-t border-fj-border pt-8 text-center">
-          <p className="text-sm text-fj-muted">{d.contribute}</p>
+          <p className="text-sm text-fj-dark/70">{d.contribute}</p>
           <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-lg border border-fj-border px-4 py-2.5">
             <span className="text-xs text-fj-muted">NH</span>
             <span className="text-sm tabular-nums font-semibold text-fj-dark">302-1632-7338-11</span>
@@ -420,7 +420,7 @@ export function DonationLedger() {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-xs text-fj-muted">{d.privacy}</p>
+        <p className="mt-6 text-center text-xs text-fj-dark/70">{d.privacy}</p>
       </div>
     </section>
   );
