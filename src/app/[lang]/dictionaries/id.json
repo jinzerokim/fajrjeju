@@ -1,0 +1,50 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "about": "Tentang",
+    "fund": "Dana Musala",
+    "community": "Komunitas",
+    "contact": "Kontak"
+  },
+  "hero": {
+    "badge": "Pulau Jeju, Korea Selatan",
+    "title": "Fajr Jeju",
+    "subtitle": "Mendukung komunitas Muslim di Jeju — dari musala pertama di Jeju selatan hingga menghubungkan saudara-saudara di seluruh pulau."
+  },
+  "info": {
+    "nextPrayer": "Salat Berikutnya",
+    "prayerPlaceholder": "Segera hadir",
+    "locationShort": "Pyoseon, Seogwipo"
+  },
+  "mission": {
+    "label": "Misi Kami",
+    "title": "Rumah bagi setiap Muslim di Jeju",
+    "desc": "Ratusan pekerja dan keluarga Muslim tinggal di seluruh Pulau Jeju, banyak yang jauh dari satu-satunya masjid di Kota Jeju. Fajr Jeju hadir untuk menjembatani.",
+    "musalla": "Musala Pyoseon",
+    "musallaDesc": "Ruang salat khusus di Pyoseon, Jeju selatan — 58,9m², menghadap kiblat, terbuka untuk semua. Area akhwat, 2 kamar mandi (1 untuk wudu), dapur kecil."
+  },
+  "fund": {
+    "label": "Dana Musala Pyoseon",
+    "title": "Bantu kami membuka musala",
+    "desc": "Setiap donasi langsung digunakan untuk mengamankan dan menyiapkan ruang musala Pyoseon.",
+    "cta": "Lihat Buku Donasi"
+  },
+  "notices": {
+    "title": "Pengumuman",
+    "tagNotice": "Info",
+    "tagEvent": "Acara",
+    "tagUpdate": "Update",
+    "placeholder1": "Jadwal pembukaan musala akan diumumkan segera",
+    "placeholder2": "Kumpul iftar komunitas — detail menyusul",
+    "placeholder3": "Buku donasi diperbarui dengan transaksi terbaru"
+  },
+  "location": {
+    "label": "Lokasi",
+    "title": "Temukan Kami",
+    "address": "Lt.1, 31 Pyoseondongseo-ro, Seogwipo-si, Jeju"
+  },
+  "footer": {
+    "org": "Fajr Jeju — Organisasi komunitas Muslim nirlaba di Pulau Jeju, Korea Selatan",
+    "site": "fajrjeju.com"
+  }
+}

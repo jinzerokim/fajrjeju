@@ -1,0 +1,50 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "fund": "Musalla Fund",
+    "community": "Community",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "Jeju Island, South Korea",
+    "title": "Fajr Jeju",
+    "subtitle": "Supporting the Muslim community in Jeju — from the first musalla in southern Jeju to connecting brothers and sisters across the island."
+  },
+  "info": {
+    "nextPrayer": "Next Prayer",
+    "prayerPlaceholder": "Coming soon",
+    "locationShort": "Pyoseon, Seogwipo"
+  },
+  "mission": {
+    "label": "Our Mission",
+    "title": "A home for every Muslim in Jeju",
+    "desc": "Hundreds of Muslim workers and families live across Jeju Island, many far from the only mosque in Jeju City. Fajr Jeju exists to bridge that gap.",
+    "musalla": "Pyoseon Musalla",
+    "musallaDesc": "A dedicated prayer space in Pyoseon, southern Jeju — 58.9m², Qibla-aligned, open to all. Sisters' area, 2 restrooms (1 for wudu), small kitchen."
+  },
+  "fund": {
+    "label": "Pyoseon Musalla Fund",
+    "title": "Help us open the musalla",
+    "desc": "Every donation goes directly to securing and setting up the Pyoseon musalla space.",
+    "cta": "View Donation Ledger"
+  },
+  "notices": {
+    "title": "Announcements",
+    "tagNotice": "Notice",
+    "tagEvent": "Event",
+    "tagUpdate": "Update",
+    "placeholder1": "Musalla opening schedule will be announced soon",
+    "placeholder2": "Community iftar gathering — details coming",
+    "placeholder3": "Donation ledger updated with latest transactions"
+  },
+  "location": {
+    "label": "Location",
+    "title": "Find Us",
+    "address": "1F, 31 Pyoseondongseo-ro, Seogwipo-si, Jeju"
+  },
+  "footer": {
+    "org": "Fajr Jeju — Non-profit Muslim community organization in Jeju Island, South Korea",
+    "site": "fajrjeju.com"
+  }
+}

@@ -13,7 +13,7 @@ type Dict = {
   sistersArea: string; restroomsLabel: string; restroomsDesc: string;
   kitchenLabel: string; busStops: string; qibla: string; raisedSoFar: string;
   transactions: string; synced: string; all: string; in: string; out: string;
-  noTx: string; contribute: string; privacy: string; copied: string; copy: string;
+  noTx: string; noOutTx: string; contribute: string; privacy: string; copied: string; copy: string;
   specs: { land: string; floor: string; floor1: string; south: string };
 };
 
@@ -35,6 +35,7 @@ const t: Record<DonationLocale, Dict> = {
     synced: "updated",
     all: "All", in: "In", out: "Out",
     noTx: "Be the first to contribute.",
+    noOutTx: "No expenses yet.",
     contribute: "Every amount counts. Send to the account below \u2014 your name appears here instantly.",
     privacy: "Names are partially hidden for privacy.",
     copied: "Copied!", copy: "Copy",
@@ -57,6 +58,7 @@ const t: Record<DonationLocale, Dict> = {
     synced: "\uc5c5\ub370\uc774\ud2b8",
     all: "\uc804\uccb4", in: "\uc785\uae08", out: "\ucd9c\uae08",
     noTx: "\uccab \ubc88\uc9f8 \ud6c4\uc6d0\uc790\uac00 \ub418\uc5b4\uc8fc\uc138\uc694.",
+    noOutTx: "아직 지출 내역이 없습니다.",
     contribute: "\uc18c\uc561\uc774\ub77c\ub3c4 \ud070 \ud798\uc774 \ub429\ub2c8\ub2e4. \uc544\ub798 \uacc4\uc88c\ub85c \uc785\uae08\ud558\uba74 \uc5ec\uae30\uc5d0 \ubc14\ub85c \ud45c\uc2dc\ub429\ub2c8\ub2e4.",
     privacy: "\uae30\ubd80\uc790\uba85\uc740 \uc77c\ubd80 \uac00\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4.",
     copied: "\ubcf5\uc0ac\ub428!", copy: "\ubcf5\uc0ac",
@@ -79,6 +81,7 @@ const t: Record<DonationLocale, Dict> = {
     synced: "diperbarui",
     all: "Semua", in: "Masuk", out: "Keluar",
     noTx: "Jadilah yang pertama berdonasi.",
+    noOutTx: "Belum ada pengeluaran.",
     contribute: "Berapapun berarti. Transfer ke rekening di bawah \u2014 langsung tampil di sini.",
     privacy: "Nama donatur sebagian disamarkan.",
     copied: "Tersalin!", copy: "Salin",
@@ -101,6 +104,7 @@ const t: Record<DonationLocale, Dict> = {
     synced: "\u0627\u067e\u0688\u06cc\u0679",
     all: "\u0633\u0628", in: "\u0622\u0645\u062f", out: "\u062e\u0631\u0686",
     noTx: "\u067e\u06c1\u0644\u06d2 \u0686\u0646\u062f\u06c1 \u062f\u06cc\u0646\u06d2 \u0648\u0627\u0644\u06d2 \u0628\u0646\u06cc\u06ba\u06d4",
+    noOutTx: "ابھی تک کوئی خرچ نہیں۔",
     contribute: "\u062a\u06be\u0648\u0691\u0627 \u0628\u06be\u06cc \u0628\u06c1\u062a \u06c1\u06d2\u06d4 \u0646\u06cc\u0686\u06d2 \u0627\u06a9\u0627\u0624\u0646\u0679 \u0645\u06cc\u06ba \u0628\u06be\u06cc\u062c\u06cc\u06ba \u2014 \u0622\u067e \u06a9\u0627 \u0646\u0627\u0645 \u0641\u0648\u0631\u0627\u064b \u06cc\u06c1\u0627\u06ba \u0646\u0638\u0631 \u0622\u0626\u06d2 \u06af\u0627\u06d4",
     privacy: "\u0646\u0627\u0645 \u067e\u0631\u0627\u0626\u06cc\u0648\u06cc\u0633\u06cc \u06a9\u06cc \u062e\u0627\u0637\u0631 \u062c\u0632\u0648\u06cc \u0686\u06be\u067e\u06d2 \u06c1\u06cc\u06ba\u06d4",
     copied: "\u06c1\u0648 \u06af\u06cc\u0627!", copy: "\u06a9\u0627\u067e\u06cc",
@@ -108,11 +112,11 @@ const t: Record<DonationLocale, Dict> = {
   },
 };
 
-const localeLabels: Record<DonationLocale, { flag: string; name: string; short: string }> = {
-  en: { flag: "/flags/gb.svg", name: "English", short: "EN" },
-  ko: { flag: "/flags/kr.svg", name: "\ud55c\uad6d\uc5b4", short: "\ud55c" },
-  id: { flag: "/flags/id.svg", name: "Indonesia", short: "ID" },
-  ur: { flag: "/flags/pk.svg", name: "\u0627\u0631\u062f\u0648", short: "\u0627\u0631" },
+const localeLabels: Record<DonationLocale, { name: string; short: string }> = {
+  en: { name: "English", short: "EN" },
+  ko: { name: "\ud55c\uad6d\uc5b4", short: "\ud55c" },
+  id: { name: "Indonesia", short: "ID" },
+  ur: { name: "\u0627\u0631\u062f\u0648", short: "\u0627\u0631" },
 };
 
 interface Transaction {
@@ -124,7 +128,6 @@ interface Transaction {
   type: "\uc785\uae08" | "\ucd9c\uae08";
 }
 
-// TODO: Replace with real API data (Supabase)
 const lastUpdated = "2026-04-06T00:26:00";
 
 const transactions: Transaction[] = [
@@ -171,8 +174,7 @@ function formatLastUpdated(iso: string) {
 function DepositIcon() {
   return (
     <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 19V5" />
-      <path d="m5 12 7-7 7 7" />
+      <path d="M12 19V5" /><path d="m5 12 7-7 7 7" />
     </svg>
   );
 }
@@ -180,8 +182,7 @@ function DepositIcon() {
 function WithdrawalIcon() {
   return (
     <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 5v14" />
-      <path d="m19 12-7 7-7-7" />
+      <path d="M12 5v14" /><path d="m19 12-7 7-7-7" />
     </svg>
   );
 }
@@ -192,19 +193,19 @@ function TransactionRow({ tx }: { tx: Transaction }) {
   return (
     <div className="flex items-center justify-between gap-4 py-3.5">
       <div className="flex items-center gap-3 min-w-0">
-        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDeposit ? "bg-jeju-ocean/8 text-jeju-ocean" : "bg-jeju-sand/15 text-jeju-sand"}`}>
+        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDeposit ? "bg-fj-teal/10 text-fj-teal" : "bg-fj-gold/15 text-fj-gold"}`}>
           {isDeposit ? <DepositIcon /> : <WithdrawalIcon />}
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm text-jeju-charcoal">{tx.description}</p>
-          <p className="text-xs tabular-nums text-muted-foreground">{tx.time.slice(0, 5)}</p>
+          <p className="truncate text-sm text-fj-dark">{tx.description}</p>
+          <p className="text-xs tabular-nums text-fj-muted">{tx.time.slice(0, 5)}</p>
         </div>
       </div>
       <div className="shrink-0 text-end" dir="ltr">
-        <span className={`font-price text-sm tabular-nums ${isDeposit ? "text-jeju-ocean" : "text-jeju-sand"}`}>
-          {isDeposit ? "+" : "\u2212"}\u20a9{formatKRW(tx.amount)}
+        <span className={`text-sm font-semibold tabular-nums ${isDeposit ? "text-fj-teal" : "text-fj-gold"}`}>
+          {isDeposit ? "+" : "−"}₩{formatKRW(tx.amount)}
         </span>
-        <p className="text-[10px] tabular-nums text-muted-foreground/60">\u20a9{formatKRW(tx.balance)}</p>
+        <p className="text-[11px] tabular-nums text-fj-muted/60">₩{formatKRW(tx.balance)}</p>
       </div>
     </div>
   );
@@ -212,11 +213,7 @@ function TransactionRow({ tx }: { tx: Transaction }) {
 
 function TransactionList({ transactions, noTxText }: { transactions: Transaction[]; noTxText: string }) {
   if (transactions.length === 0) {
-    return (
-      <p className="py-12 text-center text-sm text-muted-foreground">
-        {noTxText}
-      </p>
-    );
+    return <p className="py-12 text-center text-sm text-fj-muted">{noTxText}</p>;
   }
 
   const grouped: { date: string; label: string; txs: Transaction[] }[] = [];
@@ -233,11 +230,11 @@ function TransactionList({ transactions, noTxText }: { transactions: Transaction
     <div>
       {grouped.map((group, gi) => (
         <div key={group.date}>
-          {gi > 0 && <div className="border-t border-border/30" />}
-          <p className="pb-1 pt-4 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          {gi > 0 && <div className="border-t border-fj-border" />}
+          <p className="pb-1 pt-4 text-xs font-medium uppercase tracking-wider text-fj-muted">
             {group.label}
           </p>
-          <div className="divide-y divide-border/30">
+          <div className="divide-y divide-fj-border/50">
             {group.txs.map((tx, i) => (
               <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} />
             ))}
@@ -254,7 +251,7 @@ function CopyButton({ text, copiedText, copyText }: { text: string; copiedText: 
   return (
     <button
       type="button"
-      className="ms-2 inline-flex items-center rounded px-1.5 py-0.5 text-xs text-muted-foreground transition-colors hover:bg-muted hover:text-jeju-charcoal"
+      className="ms-2 inline-flex items-center rounded px-2.5 py-1.5 text-xs cursor-pointer text-fj-muted transition-colors hover:bg-fj-subtle hover:text-fj-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fj-teal focus-visible:ring-offset-1"
       onClick={() => {
         navigator.clipboard.writeText(text);
         setCopied(true);
@@ -267,45 +264,18 @@ function CopyButton({ text, copiedText, copyText }: { text: string; copiedText: 
 }
 
 function LangSwitcher({ lang, onChange }: { lang: DonationLocale; onChange: (l: DonationLocale) => void }) {
-  const [open, setOpen] = useState(false);
-  const current = localeLabels[lang];
-
   return (
-    <div className="fixed top-4 right-4 z-50" dir="ltr">
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-white/90 px-3 py-1.5 text-xs shadow-sm backdrop-blur-sm transition-colors hover:bg-white"
-      >
-        <img src={current.flag} alt="" className="h-3.5 w-5 rounded-[2px] object-cover" />
-        <span className="font-medium text-jeju-charcoal">{current.short}</span>
-        <svg aria-hidden="true" className={`h-3 w-3 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
-      </button>
-      {open && (
-        <div className="absolute right-0 mt-1.5 min-w-[140px] overflow-hidden rounded-lg border border-border/60 bg-white shadow-lg">
-          {donationLocales.map((l) => {
-            const label = localeLabels[l];
-            const active = l === lang;
-            return (
-              <button
-                key={l}
-                type="button"
-                onClick={() => {
-                  setOpen(false);
-                  if (l !== lang) onChange(l);
-                }}
-                className={`flex w-full items-center gap-2.5 px-3.5 py-2.5 text-xs transition-colors ${active ? "bg-jeju-charcoal/5 font-medium text-jeju-charcoal" : "text-muted-foreground hover:bg-muted/50 hover:text-jeju-charcoal"}`}
-              >
-                <img src={label.flag} alt="" className="h-3.5 w-5 rounded-[2px] object-cover" />
-                <span>{label.name}</span>
-                {active && (
-                  <svg aria-hidden="true" className="ms-auto h-3.5 w-3.5 text-jeju-ocean" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      )}
+    <div className="flex items-center justify-center gap-1.5 text-xs text-fj-muted" dir="ltr">
+      {donationLocales.map((l) => (
+        <button
+          key={l}
+          type="button"
+          onClick={() => onChange(l)}
+          className={`min-h-[44px] min-w-[44px] rounded cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fj-teal focus-visible:ring-offset-1 ${l === lang ? "bg-fj-dark text-white" : "hover:bg-fj-subtle"}`}
+        >
+          {localeLabels[l].short}
+        </button>
+      ))}
     </div>
   );
 }
@@ -315,168 +285,142 @@ export function DonationLedger() {
   const d = t[lang];
   const isRtl = lang === "ur";
 
-  const [filter, setFilter] = useState<"all" | "\uc785\uae08" | "\ucd9c\uae08">("all");
-
-  const filtered = filter === "all" ? transactions : transactions.filter((t) => t.type === filter);
 
   return (
-    <section className="py-16 sm:py-28" dir={isRtl ? "rtl" : "ltr"}>
-      <LangSwitcher lang={lang} onChange={setLang} />
+    <section className="py-16 sm:py-24" dir={isRtl ? "rtl" : "ltr"}>
       <div className="mx-auto max-w-2xl px-4 sm:px-6">
         {/* Header */}
         <div className="text-center">
-          <h1 className="font-heading text-3xl font-semibold text-jeju-charcoal sm:text-4xl">
+          <LangSwitcher lang={lang} onChange={setLang} />
+          <h1 className="mt-6 text-3xl font-bold text-fj-dark sm:text-4xl">
             {d.title}
           </h1>
-          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-fj-muted">
             {d.desc}
           </p>
-          <div className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1">
-            <svg aria-hidden="true" className="h-3 w-3 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-              <circle cx="12" cy="10" r="3" />
+          <div className="mx-auto mt-4 inline-flex items-center gap-1.5 rounded-full border border-fj-border px-3 py-1">
+            <svg aria-hidden="true" className="h-3 w-3 text-fj-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" />
             </svg>
-            <span className="text-xs text-muted-foreground">{d.location}</span>
+            <span className="text-xs text-fj-muted">{d.location}</span>
           </div>
         </div>
 
-        {/* Location */}
+        {/* Photos */}
         <div className="mt-12">
-          <p className="mb-5 text-center text-xs uppercase tracking-wider text-muted-foreground">{d.leasing}</p>
-
-          {/* Exterior */}
+          <p className="mb-5 text-center text-xs uppercase tracking-wider text-fj-muted">{d.leasing}</p>
           <div className="grid grid-cols-2 gap-2 sm:gap-3">
             <div className="col-span-2">
-              <Image src="/images/donation/KakaoTalk_20250407_101913274_01.jpg" alt="Building exterior — front view from the road" width={800} height={450} className="w-full rounded-lg object-cover aspect-video" />
+              <Image src="/images/donation/KakaoTalk_20250407_101913274_01.jpg" alt="Building exterior" width={800} height={450} priority className="w-full rounded-lg object-cover aspect-video" />
             </div>
-            <Image src="/images/donation/KakaoTalk_20250407_101913274_03.jpg" alt="Building exterior — street perspective" width={400} height={300} className="w-full rounded-lg object-cover aspect-[4/3]" />
-            <Image src="/images/donation/KakaoTalk_20250407_121758416_05.jpg" alt="Building exterior — parking area" width={400} height={300} className="w-full rounded-lg object-cover aspect-[4/3]" />
+            <Image src="/images/donation/KakaoTalk_20250407_101913274_03.jpg" alt="Street perspective" width={400} height={300} className="w-full rounded-lg object-cover aspect-[4/3]" />
+            <Image src="/images/donation/KakaoTalk_20250407_121758416_05.jpg" alt="Parking area" width={400} height={300} className="w-full rounded-lg object-cover aspect-[4/3]" />
             <div className="col-span-2">
-              <Image src="/images/donation/exterior-road.png" alt="Building exterior — road view with parking lot" width={800} height={400} className="w-full rounded-lg object-cover aspect-[2/1]" />
+              <Image src="/images/donation/exterior-road.png" alt="Road view" width={800} height={400} className="w-full rounded-lg object-cover aspect-[2/1]" />
             </div>
           </div>
 
-          {/* Interior */}
-          <p className="mb-3 mt-6 text-center text-[11px] uppercase tracking-wider text-muted-foreground/60">{d.inside}</p>
+          <p className="mb-3 mt-6 text-center text-[11px] uppercase tracking-wider text-fj-muted/60">{d.inside}</p>
           <div className="grid grid-cols-2 gap-2 sm:gap-3">
             <div className="relative col-span-2">
-              <Image src="/images/donation/KakaoTalk_20250407_121758416_01.jpg" alt="Interior — the back wall nearly faces the Qibla direction" width={800} height={450} className="w-full rounded-lg object-cover aspect-video" />
-              <span className="absolute bottom-2.5 left-2.5 inline-flex items-center gap-1.5 rounded-full bg-jeju-charcoal/70 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm">
+              <Image src="/images/donation/KakaoTalk_20250407_121758416_01.jpg" alt="Interior — Qibla direction" width={800} height={450} className="w-full rounded-lg object-cover aspect-video" />
+              <span className="absolute bottom-2.5 left-2.5 inline-flex items-center gap-1.5 rounded-full bg-fj-dark/70 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm">
                 <svg aria-hidden="true" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 2v4" /><path d="M12 18v4" /><path d="m4.93 4.93 2.83 2.83" /><path d="m16.24 16.24 2.83 2.83" /><path d="M2 12h4" /><path d="M18 12h4" /><path d="M12 12l-3-8" /></svg>
                 {d.qibla}
               </span>
             </div>
-            <Image src="/images/donation/KakaoTalk_20250407_121758416_02.jpg" alt="Interior — wide angle showing full floor space" width={400} height={300} className="w-full rounded-lg object-cover aspect-[4/3]" />
-            <Image src="/images/donation/KakaoTalk_20250407_121758416_03.jpg" alt="Interior — side wall with natural light" width={400} height={300} className="w-full rounded-lg object-cover aspect-[4/3]" />
+            <Image src="/images/donation/KakaoTalk_20250407_121758416_02.jpg" alt="Interior wide" width={400} height={300} className="w-full rounded-lg object-cover aspect-[4/3]" />
+            <Image src="/images/donation/KakaoTalk_20250407_121758416_03.jpg" alt="Interior side" width={400} height={300} className="w-full rounded-lg object-cover aspect-[4/3]" />
             <div className="col-span-2">
-              <Image src="/images/donation/KakaoTalk_20250407_121758416_04.jpg" alt="Interior — opposite side panoramic view" width={800} height={400} className="w-full rounded-lg object-cover aspect-[2/1]" />
+              <Image src="/images/donation/KakaoTalk_20250407_121758416_04.jpg" alt="Interior panoramic" width={800} height={400} className="w-full rounded-lg object-cover aspect-[2/1]" />
             </div>
           </div>
 
-          {/* Property specs */}
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] tabular-nums text-muted-foreground">
-            <span>{d.specs.land}</span>
-            <span className="text-border">\u00b7</span>
-            <span>{d.specs.floor}</span>
-            <span className="text-border">\u00b7</span>
-            <span>{d.specs.floor1}</span>
-            <span className="text-border">\u00b7</span>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] tabular-nums text-fj-muted">
+            <span>{d.specs.land}</span><span className="text-fj-border">·</span>
+            <span>{d.specs.floor}</span><span className="text-fj-border">·</span>
+            <span>{d.specs.floor1}</span><span className="text-fj-border">·</span>
             <span>{d.specs.south}</span>
           </div>
 
-          {/* Space highlights */}
           <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
-            <div className="flex items-start gap-3 rounded-lg border border-border/30 px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
-              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-jeju-ocean/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-              <p className="text-[11px] leading-snug text-muted-foreground sm:mt-2">{d.sistersArea}</p>
+            <div className="flex items-start gap-3 rounded-lg border border-fj-border px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
+              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-teal/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+              <p className="text-[11px] leading-snug text-fj-muted sm:mt-2">{d.sistersArea}</p>
             </div>
-            <div className="flex items-start gap-3 rounded-lg border border-border/30 px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
-              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-jeju-ocean/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4" /><path d="M16 2v4" /><rect x="2" y="4" width="20" height="6" rx="2" /><path d="M2 10v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8" /><path d="M10 16h4" /></svg>
-              <p className="text-[11px] leading-snug text-muted-foreground sm:mt-2"><span className="text-jeju-charcoal font-medium">{d.restroomsLabel}</span> — {d.restroomsDesc}</p>
+            <div className="flex items-start gap-3 rounded-lg border border-fj-border px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
+              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-teal/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4" /><path d="M16 2v4" /><rect x="2" y="4" width="20" height="6" rx="2" /><path d="M2 10v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8" /><path d="M10 16h4" /></svg>
+              <p className="text-[11px] leading-snug text-fj-muted sm:mt-2"><span className="text-fj-dark font-medium">{d.restroomsLabel}</span> — {d.restroomsDesc}</p>
             </div>
-            <div className="flex items-start gap-3 rounded-lg border border-border/30 px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
-              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-jeju-ocean/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" /><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4" /><line x1="12" y1="13" x2="12" y2="17" /></svg>
-              <p className="text-[11px] leading-snug text-muted-foreground sm:mt-2">{d.kitchenLabel}</p>
+            <div className="flex items-start gap-3 rounded-lg border border-fj-border px-3.5 py-3 sm:flex-col sm:items-center sm:text-center">
+              <svg aria-hidden="true" className="h-5 w-5 shrink-0 text-fj-teal/70 sm:mx-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" /><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4" /><line x1="12" y1="13" x2="12" y2="17" /></svg>
+              <p className="text-[11px] leading-snug text-fj-muted sm:mt-2">{d.kitchenLabel}</p>
             </div>
           </div>
 
-          {/* Map + Bus access */}
-          <div className="mt-5 overflow-hidden rounded-lg border border-border/30">
+          <div className="mt-5 overflow-hidden rounded-lg border border-fj-border">
             <div className="relative">
-              <Image src="/images/donation/bus-stops-map.png" alt="Map showing nearby bus stops around the building" width={800} height={300} className="w-full object-cover max-h-48" />
-              <span className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 rounded-full bg-jeju-charcoal/70 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm">
+              <Image src="/images/donation/bus-stops-map.png" alt="Bus stops map" width={800} height={300} className="w-full object-cover max-h-48" />
+              <span className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1.5 rounded-full bg-fj-dark/70 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-sm">
                 <svg aria-hidden="true" className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="14" rx="2" /><path d="M3 17h18" /><circle cx="8" cy="17" r="2" /><circle cx="16" cy="17" r="2" /></svg>
                 {d.busStops}
               </span>
             </div>
-            <div className="border-t border-border/20">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1982.5648866016409!2d126.81820475884045!3d33.311928346418895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x350d08de0839b65b%3A0x97ee6a49e9b4e2c!2s31%20Pyoseondongseo-ro%2C%20Pyoseon-myeon%2C%20Seogwipo%2C%20Jeju-do!5e0!3m2!1sen!2skr!4v1775359567921!5m2!1sen!2skr"
-              className="h-48 w-full sm:h-64"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Planned musalla location — 31 Pyoseondongseo-ro, Seogwipo"
-            />
+            <div className="border-t border-fj-border">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1982.5648866016409!2d126.81820475884045!3d33.311928346418895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x350d08de0839b65b%3A0x97ee6a49e9b4e2c!2s31%20Pyoseondongseo-ro%2C%20Pyoseon-myeon%2C%20Seogwipo%2C%20Jeju-do!5e0!3m2!1sen!2skr!4v1775359567921!5m2!1sen!2skr"
+                className="h-48 w-full border-0 sm:h-64"
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Musalla location"
+              />
             </div>
           </div>
         </div>
 
         {/* Amount raised */}
-        <div className="mt-12 border-y border-border/40 py-8 text-center">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">{d.raisedSoFar}</p>
-          <p className="mt-2 font-price text-3xl tabular-nums text-jeju-charcoal sm:text-4xl" dir="ltr">
-            \u20a9{formatKRW(currentBalance)}
+        <div className="mt-12 border-y border-fj-border py-8 text-center">
+          <p className="text-xs uppercase tracking-wider text-fj-muted">{d.raisedSoFar}</p>
+          <p className="mt-2 text-3xl font-bold tabular-nums text-fj-dark sm:text-4xl" dir="ltr">
+            <span className="text-fj-muted font-normal">₩</span>{formatKRW(currentBalance)}
           </p>
-          <p className="mt-2 text-xs text-muted-foreground">
-            {txCount} {d.transactions} \u00b7 {d.synced} {formatLastUpdated(lastUpdated)}
+          <p className="mt-2 text-xs text-fj-muted">
+            {txCount} {d.transactions} · {d.synced} {formatLastUpdated(lastUpdated)}
           </p>
         </div>
 
         {/* Transactions */}
         <div className="mt-10">
-          <Tabs defaultValue="all" onValueChange={(v) => setFilter(v as typeof filter)}>
+          <Tabs defaultValue="all" >
             <div className="flex items-center justify-between">
               <TabsList>
                 <TabsTrigger value="all">{d.all}</TabsTrigger>
                 <TabsTrigger value="\uc785\uae08">{d.in}</TabsTrigger>
                 <TabsTrigger value="\ucd9c\uae08">{d.out}</TabsTrigger>
               </TabsList>
-              <Badge variant="outline" className="text-xs">LIVE</Badge>
+              <Badge variant="outline" className="text-xs tabular-nums">{formatLastUpdated(lastUpdated)}</Badge>
             </div>
-
             <div className="mt-4">
-              <TabsContent value="all">
-                <TransactionList transactions={filtered} noTxText={d.noTx} />
-              </TabsContent>
-              <TabsContent value="\uc785\uae08">
-                <TransactionList transactions={filtered} noTxText={d.noTx} />
-              </TabsContent>
-              <TabsContent value="\ucd9c\uae08">
-                <TransactionList transactions={filtered} noTxText={d.noTx} />
-              </TabsContent>
+              <TabsContent value="all"><TransactionList transactions={transactions} noTxText={d.noTx} /></TabsContent>
+              <TabsContent value="입금"><TransactionList transactions={transactions.filter((tx) => tx.type === "입금")} noTxText={d.noTx} /></TabsContent>
+              <TabsContent value="출금"><TransactionList transactions={transactions.filter((tx) => tx.type === "출금")} noTxText={d.noOutTx} /></TabsContent>
             </div>
           </Tabs>
         </div>
 
         {/* Account */}
-        <div className="mt-16 border-t border-border/40 pt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            {d.contribute}
-          </p>
-          <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2.5">
-            <span className="text-xs text-muted-foreground">NH</span>
-            <span className="text-sm tabular-nums font-medium text-jeju-charcoal">302-1632-7338-11</span>
-            <span className="text-xs text-muted-foreground">\uc0b4\ub78c\uc81c\uc8fc</span>
+        <div className="mt-16 border-t border-fj-border pt-8 text-center">
+          <p className="text-sm text-fj-muted">{d.contribute}</p>
+          <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-lg border border-fj-border px-4 py-2.5">
+            <span className="text-xs text-fj-muted">NH</span>
+            <span className="text-sm tabular-nums font-semibold text-fj-dark">302-1632-7338-11</span>
+            <span className="text-xs text-fj-muted">파즈르제주</span>
             <CopyButton text="3021632733811" copiedText={d.copied} copyText={d.copy} />
           </div>
         </div>
 
-        {/* Footer */}
-        <p className="mt-6 text-center text-xs text-muted-foreground">
-          {d.privacy}
-        </p>
+        <p className="mt-6 text-center text-xs text-fj-muted">{d.privacy}</p>
       </div>
     </section>
   );
