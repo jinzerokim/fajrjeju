@@ -73,15 +73,36 @@ export default async function LangLayout({
         {/* ── Footer ── */}
         <footer className="bg-fj-surface">
           <div className="h-px bg-gradient-to-r from-transparent via-fj-gold/30 to-transparent" />
-          <div className="mx-auto max-w-6xl px-5 py-6">
-            <div className="flex flex-col gap-3 text-[12px] text-fj-dark/70 sm:flex-row sm:items-baseline sm:justify-between">
-              <p>
+          <div className="mx-auto max-w-6xl px-5 py-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              {/* Brand + org */}
+              <div className="flex items-center gap-2 text-[12px]">
                 <span className="font-bold text-fj-dark" style={{ fontFamily: "var(--font-kufam), var(--font-sans)" }}>Fajr Jeju</span>
-                <span className="mx-1.5 text-fj-border">·</span>{dict.footer.rep}
-                <span className="mx-1.5 text-fj-border">·</span>
-                <a href="mailto:support@fajrjeju.com" className="underline decoration-fj-border underline-offset-2 transition-colors hover:text-fj-dark">{dict.footer.email}</a>
-              </p>
-              <p className="text-fj-muted">{dict.footer.taxId}</p>
+                <span className="h-3 w-px bg-fj-border" />
+                <span className="text-fj-muted">{dict.footer.rep}</span>
+              </div>
+              {/* Contact */}
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-fj-dark/60">
+                <a
+                  href="https://map.naver.com/p/search/제주 서귀포시 표선면 표선동서로 31"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 transition-colors hover:text-fj-dark"
+                >
+                  <svg className="h-3 w-3 text-fj-gold/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                  </svg>
+                  {dict.footer.address}
+                </a>
+                <a href="mailto:support@fajrjeju.com" className="flex items-center gap-1 transition-colors hover:text-fj-dark">
+                  <svg className="h-3 w-3 text-fj-gold/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+                  </svg>
+                  {dict.footer.email}
+                </a>
+                <span className="text-fj-muted">{dict.footer.taxId}</span>
+              </div>
             </div>
           </div>
         </footer>

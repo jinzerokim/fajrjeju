@@ -12,3 +12,4 @@ export const localeNames: Record<Locale, string> = {
   ur: "اردو",
   ar: "العربية",
 };
+
