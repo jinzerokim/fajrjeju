@@ -55,3 +55,9 @@ jobs:
           env_vars: |
             NODE_ENV=production
             SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+            BANK_API_KEY=${{ secrets.BANK_API_KEY }}
+            BANK_API_SECRET=${{ secrets.BANK_API_SECRET }}
+            BANK_CODE=NH
+            BANK_ACCOUNT_NUMBER=3511397568773
+            BANK_ACCOUNT_PASSWORD=${{ secrets.BANK_ACCOUNT_PASSWORD }}
+            BANK_RESIDENT_NUMBER=${{ secrets.BANK_RESIDENT_NUMBER }}
