@@ -15,7 +15,7 @@ type Dict = {
   transactions: string; synced: string; all: string; in: string; out: string;
   noTx: string; noOutTx: string; contribute: string; privacy: string; copied: string; copy: string;
   specs: { land: string; floor: string; floor1: string; south: string };
-  phase1Label: string; phase2Label: string; live: string;
+  phase1Label: string; phase2Label: string; live: string; autoSync: string;
 };
 
 const t: Record<DonationLocale, Dict> = {
@@ -44,6 +44,7 @@ const t: Record<DonationLocale, Dict> = {
     phase1Label: "Phase 1 — Collected by Khalid",
     phase2Label: "Fajr Jeju Account",
     live: "Live",
+    autoSync: "Auto-synced with bank every 5 minutes.",
   },
   ko: {
     title: "\ud45c\uc120 \ubb34\uc0b4\ub77c \ud380\ub4dc",
@@ -70,6 +71,7 @@ const t: Record<DonationLocale, Dict> = {
     phase1Label: "1단계 — 칼리드 대리 수금",
     phase2Label: "파즈르제주 계좌",
     live: "실시간",
+    autoSync: "은행과 5분마다 자동 연동됩니다.",
   },
   id: {
     title: "Dana Musala Pyoseon",
@@ -96,6 +98,7 @@ const t: Record<DonationLocale, Dict> = {
     phase1Label: "Fase 1 — Dikumpulkan oleh Khalid",
     phase2Label: "Rekening Fajr Jeju",
     live: "Langsung",
+    autoSync: "Sinkronisasi otomatis dengan bank setiap 5 menit.",
   },
   ur: {
     title: "\u067e\u06cc\u0648\u0633\u06cc\u0648\u0646 \u0645\u0635\u0644\u06cc\u0670 \u0641\u0646\u0688",
@@ -122,6 +125,7 @@ const t: Record<DonationLocale, Dict> = {
     phase1Label: "مرحلہ 1 — خالد نے جمع کیا",
     phase2Label: "فجر جیجو اکاؤنٹ",
     live: "لائیو",
+    autoSync: "ہر 5 منٹ میں بینک سے خودکار مطابقت۔",
   },
 };
 
@@ -463,6 +467,7 @@ export function DonationLedger({ lang: pageLang, liveTransactions, liveLastUpdat
         </div>
 
         <p className="mt-6 text-center text-xs text-fj-dark/70">{d.privacy}</p>
+        <p className="mt-1 text-center text-xs text-fj-muted">{d.autoSync}</p>
       </div>
     </section>
   );

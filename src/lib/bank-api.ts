@@ -38,22 +38,39 @@ export async function fetchBankTransactions(): Promise<{
   const startDate = new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000)
     .toISOString().slice(0, 10).replace(/-/g, "");
 
-  const res = await fetch("https://api.bankapi.co.kr/v1/transactions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}:${apiSecret}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      bankCode,
-      accountNumber,
-      accountPassword,
-      residentNumber,
-      startDate,
-      endDate,
-    }),
-    next: { revalidate: 300 },
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10_000);
+
+  let res: Response;
+  try {
+    res = await fetch("https://api.bankapi.co.kr/v1/transactions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}:${apiSecret}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        bankCode,
+        accountNumber,
+        accountPassword,
+        residentNumber,
+        startDate,
+        endDate,
+      }),
+      signal: controller.signal,
+      next: { revalidate: 300 },
+    });
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeout);
+  }
+
+  if (res.status === 429) {
+    const retryAfter = Number(res.headers.get("Retry-After") || "60");
+    await new Promise((r) => setTimeout(r, retryAfter * 1000));
+    return fetchBankTransactions();
+  }
 
   if (!res.ok) return null;
 
