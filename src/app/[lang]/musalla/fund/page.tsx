@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale } from "../../dictionaries";
 import { DonationLedger } from "@/components/donation-ledger";
+import { fetchBankTransactions } from "@/lib/bank-api";
 
 export const metadata: Metadata = {
   title: "Pyoseon Musalla Fund — Donation Transparency",
@@ -20,5 +21,13 @@ export default async function FundPage({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
 
-  return <DonationLedger lang={lang} />;
+  const bankData = await fetchBankTransactions();
+
+  return (
+    <DonationLedger
+      lang={lang}
+      liveTransactions={bankData?.transactions}
+      liveLastUpdated={bankData?.lastUpdated}
+    />
+  );
 }

@@ -15,6 +15,7 @@ type Dict = {
   transactions: string; synced: string; all: string; in: string; out: string;
   noTx: string; noOutTx: string; contribute: string; privacy: string; copied: string; copy: string;
   specs: { land: string; floor: string; floor1: string; south: string };
+  phase1Label: string; phase2Label: string; live: string;
 };
 
 const t: Record<DonationLocale, Dict> = {
@@ -40,6 +41,9 @@ const t: Record<DonationLocale, Dict> = {
     privacy: "Names are partially hidden for privacy.",
     copied: "Copied!", copy: "Copy",
     specs: { land: "Land 601m\u00b2", floor: "58.9m\u00b2", floor1: "1F", south: "South-facing" },
+    phase1Label: "Phase 1 — Collected by Khalid",
+    phase2Label: "Fajr Jeju Account",
+    live: "Live",
   },
   ko: {
     title: "\ud45c\uc120 \ubb34\uc0b4\ub77c \ud380\ub4dc",
@@ -63,6 +67,9 @@ const t: Record<DonationLocale, Dict> = {
     privacy: "\uae30\ubd80\uc790\uba85\uc740 \uc77c\ubd80 \uac00\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4.",
     copied: "\ubcf5\uc0ac\ub428!", copy: "\ubcf5\uc0ac",
     specs: { land: "\ub300\uc9c0 601m\u00b2", floor: "58.9m\u00b2", floor1: "1\uce35", south: "\ub0a8\ud5a5" },
+    phase1Label: "1단계 — 칼리드 대리 수금",
+    phase2Label: "파즈르제주 계좌",
+    live: "실시간",
   },
   id: {
     title: "Dana Musala Pyoseon",
@@ -86,6 +93,9 @@ const t: Record<DonationLocale, Dict> = {
     privacy: "Nama donatur sebagian disamarkan.",
     copied: "Tersalin!", copy: "Salin",
     specs: { land: "Tanah 601m\u00b2", floor: "58,9m\u00b2", floor1: "Lt.1", south: "Hadap selatan" },
+    phase1Label: "Fase 1 — Dikumpulkan oleh Khalid",
+    phase2Label: "Rekening Fajr Jeju",
+    live: "Langsung",
   },
   ur: {
     title: "\u067e\u06cc\u0648\u0633\u06cc\u0648\u0646 \u0645\u0635\u0644\u06cc\u0670 \u0641\u0646\u0688",
@@ -109,6 +119,9 @@ const t: Record<DonationLocale, Dict> = {
     privacy: "\u0646\u0627\u0645 \u067e\u0631\u0627\u0626\u06cc\u0648\u06cc\u0633\u06cc \u06a9\u06cc \u062e\u0627\u0637\u0631 \u062c\u0632\u0648\u06cc \u0686\u06be\u067e\u06d2 \u06c1\u06cc\u06ba\u06d4",
     copied: "\u06c1\u0648 \u06af\u06cc\u0627!", copy: "\u06a9\u0627\u067e\u06cc",
     specs: { land: "\u0632\u0645\u06cc\u0646 601\u0645\u06cc\u0679\u0631", floor: "58.9\u0645\u06cc\u0679\u0631", floor1: "\u067e\u06c1\u0644\u06cc \u0645\u0646\u0632\u0644", south: "\u062c\u0646\u0648\u0628 \u0631\u062e" },
+    phase1Label: "مرحلہ 1 — خالد نے جمع کیا",
+    phase2Label: "فجر جیجو اکاؤنٹ",
+    live: "لائیو",
   },
 };
 
@@ -117,18 +130,18 @@ function mapLocale(lang: string): DonationLocale {
   return "en";
 }
 
-interface Transaction {
+export interface Transaction {
   date: string;
   time: string;
   description: string;
   amount: number;
   balance: number;
-  type: "\uc785\uae08" | "\ucd9c\uae08";
+  type: "입금" | "출금";
 }
 
-const lastUpdated = "2026-04-06T15:12:00";
+const legacyLastUpdated = "2026-04-06T15:12:00";
 
-const transactions: Transaction[] = [
+const legacyTransactions: Transaction[] = [
   { date: "2026-04-06", time: "15:12:00", description: "RAZZAQ Z***H", amount: 50000, balance: 4246000, type: "입금" },
   { date: "2026-04-06", time: "00:26:00", description: "ALI M***SSA", amount: 500000, balance: 4196000, type: "\uc785\uae08" },
   { date: "2026-04-05", time: "22:04:00", description: "TALHA M***A", amount: 186000, balance: 3696000, type: "\uc785\uae08" },
@@ -153,8 +166,7 @@ const transactions: Transaction[] = [
   { date: "2026-04-02", time: "23:04:00", description: "BILAL M***A", amount: 200000, balance: 200000, type: "\uc785\uae08" },
 ];
 
-const currentBalance = transactions[0].balance;
-const txCount = transactions.length;
+const legacyBalance = legacyTransactions[0].balance;
 
 function formatKRW(n: number) {
   return new Intl.NumberFormat("ko-KR").format(n);
@@ -262,10 +274,24 @@ function CopyButton({ text, copiedText, copyText }: { text: string; copiedText: 
   );
 }
 
-export function DonationLedger({ lang: pageLang }: { lang: string }) {
+interface DonationLedgerProps {
+  lang: string;
+  liveTransactions?: Transaction[];
+  liveLastUpdated?: string;
+}
+
+export function DonationLedger({ lang: pageLang, liveTransactions, liveLastUpdated }: DonationLedgerProps) {
   const lang = mapLocale(pageLang);
   const d = t[lang];
   const isRtl = lang === "ur";
+
+  const allTransactions = [...(liveTransactions ?? []), ...legacyTransactions];
+  const totalBalance = liveTransactions?.length
+    ? (liveTransactions[0].balance + legacyBalance)
+    : legacyBalance;
+  const totalTxCount = allTransactions.length;
+  const lastUpdated = liveLastUpdated ?? legacyLastUpdated;
+  const hasLive = liveTransactions && liveTransactions.length > 0;
 
   return (
     <section className="py-16 sm:py-24" dir={isRtl ? "rtl" : "ltr"}>
@@ -363,28 +389,50 @@ export function DonationLedger({ lang: pageLang }: { lang: string }) {
         <div className="mt-12 border-y border-fj-border py-8 text-center">
           <p className="text-xs uppercase tracking-wider text-fj-muted">{d.raisedSoFar}</p>
           <p className="mt-2 text-3xl font-bold tabular-nums text-fj-dark sm:text-4xl" dir="ltr">
-            <span className="text-fj-muted font-normal">₩</span>{formatKRW(currentBalance)}
+            <span className="text-fj-muted font-normal">₩</span>{formatKRW(totalBalance)}
           </p>
           <p className="mt-2 text-xs text-fj-muted">
-            {txCount} {d.transactions} · {d.synced} {formatLastUpdated(lastUpdated)}
+            {totalTxCount} {d.transactions} · {d.synced} {formatLastUpdated(lastUpdated)}
           </p>
         </div>
 
         {/* Transactions */}
         <div className="mt-10">
-          <Tabs defaultValue="all" >
+          <Tabs defaultValue="all">
             <div className="flex items-center justify-between">
               <TabsList>
                 <TabsTrigger value="all">{d.all}</TabsTrigger>
-                <TabsTrigger value="\uc785\uae08">{d.in}</TabsTrigger>
-                <TabsTrigger value="\ucd9c\uae08">{d.out}</TabsTrigger>
+                <TabsTrigger value="입금">{d.in}</TabsTrigger>
+                <TabsTrigger value="출금">{d.out}</TabsTrigger>
               </TabsList>
-              <Badge variant="outline" className="text-xs tabular-nums">{formatLastUpdated(lastUpdated)}</Badge>
+              {hasLive && (
+                <Badge variant="outline" className="gap-1 text-xs tabular-nums">
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  {d.live}
+                </Badge>
+              )}
             </div>
             <div className="mt-4">
-              <TabsContent value="all"><TransactionList transactions={transactions} noTxText={d.noTx} /></TabsContent>
-              <TabsContent value="입금"><TransactionList transactions={transactions.filter((tx) => tx.type === "입금")} noTxText={d.noTx} /></TabsContent>
-              <TabsContent value="출금"><TransactionList transactions={transactions.filter((tx) => tx.type === "출금")} noTxText={d.noOutTx} /></TabsContent>
+              <TabsContent value="all">
+                {hasLive && (
+                  <>
+                    <p className="pb-1 text-[11px] font-semibold uppercase tracking-wider text-fj-teal">{d.phase2Label}</p>
+                    <TransactionList transactions={liveTransactions} noTxText={d.noTx} />
+                    <div className="my-6 flex items-center gap-3">
+                      <div className="h-px flex-1 bg-fj-border" />
+                      <span className="text-[10px] uppercase tracking-widest text-fj-muted">{d.phase1Label}</span>
+                      <div className="h-px flex-1 bg-fj-border" />
+                    </div>
+                  </>
+                )}
+                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} />
+              </TabsContent>
+              <TabsContent value="입금">
+                <TransactionList transactions={allTransactions.filter((tx) => tx.type === "입금")} noTxText={d.noTx} />
+              </TabsContent>
+              <TabsContent value="출금">
+                <TransactionList transactions={allTransactions.filter((tx) => tx.type === "출금")} noTxText={d.noOutTx} />
+              </TabsContent>
             </div>
           </Tabs>
         </div>
@@ -394,10 +442,24 @@ export function DonationLedger({ lang: pageLang }: { lang: string }) {
           <p className="text-sm text-fj-dark/70">{d.contribute}</p>
           <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-lg border border-fj-border px-4 py-2.5">
             <span className="text-xs text-fj-muted">NH</span>
-            <span className="text-sm tabular-nums font-semibold text-fj-dark">302-1632-7338-11</span>
-            <span className="text-xs text-fj-muted">파즈르제주</span>
-            <CopyButton text="3021632733811" copiedText={d.copied} copyText={d.copy} />
+            <span className="text-sm tabular-nums font-semibold text-fj-dark">351-1397-5687-73</span>
+            <span className="text-xs text-fj-muted">파즈르제주 (Fajr Jeju)</span>
+            <CopyButton text="351139756873" copiedText={d.copied} copyText={d.copy} />
           </div>
+        </div>
+
+        {/* Registration Certificate */}
+        <div className="mt-10 flex flex-col items-center gap-3">
+          <div className="overflow-hidden rounded-lg border border-fj-border shadow-sm">
+            <Image
+              src="/images/donation/20260407_160627.jpg"
+              alt="Fajr Jeju Registration Certificate (고유번호증)"
+              width={400}
+              height={560}
+              className="w-full max-w-[400px]"
+            />
+          </div>
+          <p className="text-xs text-fj-muted">고유번호 654-80-03543</p>
         </div>
 
         <p className="mt-6 text-center text-xs text-fj-dark/70">{d.privacy}</p>
