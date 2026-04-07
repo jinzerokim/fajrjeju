@@ -5,134 +5,16 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-const donationLocales = ["en", "ko", "id", "ur"] as const;
-type DonationLocale = (typeof donationLocales)[number];
-
-type Dict = {
+export type DonationDict = {
   title: string; desc: string; location: string; leasing: string; inside: string;
   sistersArea: string; restroomsLabel: string; restroomsDesc: string;
   kitchenLabel: string; busStops: string; qibla: string; raisedSoFar: string;
   transactions: string; synced: string; all: string; in: string; out: string;
-  noTx: string; noOutTx: string; contribute: string; privacy: string; copied: string; copy: string;
+  noTx: string; noOutTx: string; contribute: string; privacy: string; copied: string; copy: string; closing: string;
   specs: { land: string; floor: string; floor1: string; south: string };
   phase1Label: string; phase2Label: string; live: string; autoSync: string;
+  regCaption: string;
 };
-
-const t: Record<DonationLocale, Dict> = {
-  en: {
-    title: "Pyoseon Musalla Fund",
-    desc: "There\u2019s nowhere to pray in southern Jeju. Together, we\u2019re opening a musalla in Pyoseon \u2014 and every won is accounted for, right here.",
-    location: "1F, 31 Pyoseondongseo-ro, Seogwipo-si, Jeju",
-    leasing: "Our future space",
-    inside: "Inside \u2014 58.9m\u00b2",
-    sistersArea: "Sisters\u2019 area in the back",
-    restroomsLabel: "2 restrooms",
-    restroomsDesc: "1 indoor + 1 outdoor for wudu",
-    kitchenLabel: "Small kitchen + utility room",
-    busStops: "Bus stops nearby",
-    qibla: "Faces the Qibla",
-    raisedSoFar: "Raised so far",
-    transactions: "donations",
-    synced: "updated",
-    all: "All", in: "In", out: "Out",
-    noTx: "Be the first to contribute.",
-    noOutTx: "No expenses yet.",
-    contribute: "Every amount counts. Send to the account below \u2014 your name appears here instantly.",
-    privacy: "Names are partially hidden for privacy.",
-    copied: "Copied!", copy: "Copy",
-    specs: { land: "Land 601m\u00b2", floor: "58.9m\u00b2", floor1: "1F", south: "South-facing" },
-    phase1Label: "Phase 1 — Collected by Khalid",
-    phase2Label: "Fajr Jeju Account",
-    live: "Live",
-    autoSync: "Auto-synced with bank every 5 minutes.",
-  },
-  ko: {
-    title: "\ud45c\uc120 \ubb34\uc0b4\ub77c \ud380\ub4dc",
-    desc: "\uc81c\uc8fc \ub0a8\ubd80\uc5d0\ub294 \uae30\ub3c4\ud560 \uacf3\uc774 \uc5c6\uc2b5\ub2c8\ub2e4. \ud45c\uc120\uc5d0 \ud568\uaed8 \ubb34\uc0b4\ub77c\ub97c \ub9cc\ub4e4\uace0 \uc788\uc73c\uba70, \ubaa8\ub4e0 \ubaa8\uae08 \ub0b4\uc5ed\uc744 \uc5ec\uae30\uc5d0 \uacf5\uac1c\ud569\ub2c8\ub2e4.",
-    location: "1\uce35, \uc11c\uadc0\ud3ec\uc2dc \ud45c\uc120\uba74 \ud45c\uc120\ub3d9\uc11c\ub85c 31",
-    leasing: "\uc784\ub300 \uc608\uc815 \uacf5\uac04",
-    inside: "\ub0b4\ubd80 \u2014 58.9m\u00b2 (17.8\ud3c9)",
-    sistersArea: "\ud6c4\ubc29 \uc5ec\uc131 \uae30\ub3c4 \uacf5\uac04",
-    restroomsLabel: "\ud654\uc7a5\uc2e4 2\uac1c",
-    restroomsDesc: "\uc2e4\ub0b4 1 + \uc2e4\uc678 1(\uc6b0\ub450\uc6a9)",
-    kitchenLabel: "\uac04\uc774\uc8fc\ubc29 + \uc218\ub0a9\uacf5\uac04",
-    busStops: "\ubc84\uc2a4 \uc815\ub958\uc7a5 \ubc14\ub85c \uc55e",
-    qibla: "\ud0a4\ube14\ub77c \ubc29\ud5a5",
-    raisedSoFar: "\ubaa8\uae08\uc561",
-    transactions: "\uac74",
-    synced: "\uc5c5\ub370\uc774\ud2b8",
-    all: "\uc804\uccb4", in: "\uc785\uae08", out: "\ucd9c\uae08",
-    noTx: "\uccab \ubc88\uc9f8 \ud6c4\uc6d0\uc790\uac00 \ub418\uc5b4\uc8fc\uc138\uc694.",
-    noOutTx: "아직 지출 내역이 없습니다.",
-    contribute: "\uc18c\uc561\uc774\ub77c\ub3c4 \ud070 \ud798\uc774 \ub429\ub2c8\ub2e4. \uc544\ub798 \uacc4\uc88c\ub85c \uc785\uae08\ud558\uba74 \uc5ec\uae30\uc5d0 \ubc14\ub85c \ud45c\uc2dc\ub429\ub2c8\ub2e4.",
-    privacy: "\uae30\ubd80\uc790\uba85\uc740 \uc77c\ubd80 \uac00\ub824\uc838 \uc788\uc2b5\ub2c8\ub2e4.",
-    copied: "\ubcf5\uc0ac\ub428!", copy: "\ubcf5\uc0ac",
-    specs: { land: "\ub300\uc9c0 601m\u00b2", floor: "58.9m\u00b2", floor1: "1\uce35", south: "\ub0a8\ud5a5" },
-    phase1Label: "1단계 — 칼리드 대리 수금",
-    phase2Label: "파즈르제주 계좌",
-    live: "실시간",
-    autoSync: "은행과 5분마다 자동 연동됩니다.",
-  },
-  id: {
-    title: "Dana Musala Pyoseon",
-    desc: "Di Jeju selatan belum ada tempat salat. Bersama-sama kita buka musala di Pyoseon \u2014 setiap rupiah tercatat di sini.",
-    location: "Lt.1, 31 Pyoseondongseo-ro, Seogwipo-si, Jeju",
-    leasing: "Calon lokasi",
-    inside: "Dalam \u2014 58,9m\u00b2",
-    sistersArea: "Area akhwat di belakang",
-    restroomsLabel: "2 kamar mandi",
-    restroomsDesc: "1 dalam + 1 luar untuk wudu",
-    kitchenLabel: "Dapur kecil + ruang serbaguna",
-    busStops: "Halte bus dekat",
-    qibla: "Menghadap kiblat",
-    raisedSoFar: "Terkumpul",
-    transactions: "donasi",
-    synced: "diperbarui",
-    all: "Semua", in: "Masuk", out: "Keluar",
-    noTx: "Jadilah yang pertama berdonasi.",
-    noOutTx: "Belum ada pengeluaran.",
-    contribute: "Berapapun berarti. Transfer ke rekening di bawah \u2014 langsung tampil di sini.",
-    privacy: "Nama donatur sebagian disamarkan.",
-    copied: "Tersalin!", copy: "Salin",
-    specs: { land: "Tanah 601m\u00b2", floor: "58,9m\u00b2", floor1: "Lt.1", south: "Hadap selatan" },
-    phase1Label: "Fase 1 — Dikumpulkan oleh Khalid",
-    phase2Label: "Rekening Fajr Jeju",
-    live: "Langsung",
-    autoSync: "Sinkronisasi otomatis dengan bank setiap 5 menit.",
-  },
-  ur: {
-    title: "\u067e\u06cc\u0648\u0633\u06cc\u0648\u0646 \u0645\u0635\u0644\u06cc\u0670 \u0641\u0646\u0688",
-    desc: "\u062c\u06cc\u062c\u0648 \u06a9\u06d2 \u062c\u0646\u0648\u0628 \u0645\u06cc\u06ba \u0646\u0645\u0627\u0632 \u06a9\u06cc \u06a9\u0648\u0626\u06cc \u062c\u06af\u06c1 \u0646\u06c1\u06cc\u06ba\u06d4 \u0622\u0626\u06cc\u06d2 \u0645\u0644 \u06a9\u0631 \u067e\u06cc\u0648\u0633\u06cc\u0648\u0646 \u0645\u06cc\u06ba \u0645\u0635\u0644\u06cc\u0670 \u0628\u0646\u0627\u0626\u06cc\u06ba \u2014 \u06c1\u0631 \u067e\u0627\u0626\u06cc \u06a9\u0627 \u062d\u0633\u0627\u0628 \u06cc\u06c1\u0627\u06ba \u0645\u0648\u062c\u0648\u062f \u06c1\u06d2\u06d4",
-    location: "\u067e\u06c1\u0644\u06cc \u0645\u0646\u0632\u0644\u060c 31 \u067e\u06cc\u0648\u0633\u06cc\u0648\u0646\u062f\u0648\u0646\u06af\u0633\u06cc\u0648-\u0631\u0648\u060c \u0633\u06cc\u0648\u06af\u0648\u06cc\u067e\u0648",
-    leasing: "\u06c1\u0645\u0627\u0631\u06cc \u0622\u0626\u0646\u062f\u06c1 \u062c\u06af\u06c1",
-    inside: "\u0627\u0646\u062f\u0631 \u2014 58.9 \u0645\u0631\u0628\u0639 \u0645\u06cc\u0679\u0631",
-    sistersArea: "\u067e\u0686\u06be\u0644\u06d2 \u062e\u0648\u0627\u062a\u06cc\u0646 \u06a9\u0627 \u062d\u0635\u06c1",
-    restroomsLabel: "2 \u0628\u0627\u062b\u0631\u0648\u0645",
-    restroomsDesc: "1 \u0627\u0646\u062f\u0631 + 1 \u0628\u0627\u06c1\u0631 \u0648\u0636\u0648 \u06a9\u06d2 \u0644\u06cc\u06d2",
-    kitchenLabel: "\u0686\u06be\u0648\u0679\u0627 \u06a9\u0686\u0646 + \u0627\u0636\u0627\u0641\u06cc \u06a9\u0645\u0631\u06c1",
-    busStops: "\u0628\u0633 \u0627\u0633\u0679\u0627\u067e \u0642\u0631\u06cc\u0628",
-    qibla: "\u0642\u0628\u0644\u06c1 \u0631\u062e",
-    raisedSoFar: "\u0627\u0628 \u062a\u06a9",
-    transactions: "\u0686\u0646\u062f\u06d2",
-    synced: "\u0627\u067e\u0688\u06cc\u0679",
-    all: "\u0633\u0628", in: "\u0622\u0645\u062f", out: "\u062e\u0631\u0686",
-    noTx: "\u067e\u06c1\u0644\u06d2 \u0686\u0646\u062f\u06c1 \u062f\u06cc\u0646\u06d2 \u0648\u0627\u0644\u06d2 \u0628\u0646\u06cc\u06ba\u06d4",
-    noOutTx: "ابھی تک کوئی خرچ نہیں۔",
-    contribute: "\u062a\u06be\u0648\u0691\u0627 \u0628\u06be\u06cc \u0628\u06c1\u062a \u06c1\u06d2\u06d4 \u0646\u06cc\u0686\u06d2 \u0627\u06a9\u0627\u0624\u0646\u0679 \u0645\u06cc\u06ba \u0628\u06be\u06cc\u062c\u06cc\u06ba \u2014 \u0622\u067e \u06a9\u0627 \u0646\u0627\u0645 \u0641\u0648\u0631\u0627\u064b \u06cc\u06c1\u0627\u06ba \u0646\u0638\u0631 \u0622\u0626\u06d2 \u06af\u0627\u06d4",
-    privacy: "\u0646\u0627\u0645 \u067e\u0631\u0627\u0626\u06cc\u0648\u06cc\u0633\u06cc \u06a9\u06cc \u062e\u0627\u0637\u0631 \u062c\u0632\u0648\u06cc \u0686\u06be\u067e\u06d2 \u06c1\u06cc\u06ba\u06d4",
-    copied: "\u06c1\u0648 \u06af\u06cc\u0627!", copy: "\u06a9\u0627\u067e\u06cc",
-    specs: { land: "\u0632\u0645\u06cc\u0646 601\u0645\u06cc\u0679\u0631", floor: "58.9\u0645\u06cc\u0679\u0631", floor1: "\u067e\u06c1\u0644\u06cc \u0645\u0646\u0632\u0644", south: "\u062c\u0646\u0648\u0628 \u0631\u062e" },
-    phase1Label: "مرحلہ 1 — خالد نے جمع کیا",
-    phase2Label: "فجر جیجو اکاؤنٹ",
-    live: "لائیو",
-    autoSync: "ہر 5 منٹ میں بینک سے خودکار مطابقت۔",
-  },
-};
-
-function mapLocale(lang: string): DonationLocale {
-  if (lang in t) return lang as DonationLocale;
-  return "en";
-}
 
 export interface Transaction {
   date: string;
@@ -280,14 +162,13 @@ function CopyButton({ text, copiedText, copyText }: { text: string; copiedText: 
 
 interface DonationLedgerProps {
   lang: string;
+  dict: DonationDict;
   liveTransactions?: Transaction[];
   liveLastUpdated?: string;
 }
 
-export function DonationLedger({ lang: pageLang, liveTransactions, liveLastUpdated }: DonationLedgerProps) {
-  const lang = mapLocale(pageLang);
-  const d = t[lang];
-  const isRtl = lang === "ur";
+export function DonationLedger({ lang, dict: d, liveTransactions, liveLastUpdated }: DonationLedgerProps) {
+  const isRtl = lang === "ur" || lang === "ar";
 
   const allTransactions = [...(liveTransactions ?? []), ...legacyTransactions];
   const totalBalance = liveTransactions?.length
@@ -390,12 +271,13 @@ export function DonationLedger({ lang: pageLang, liveTransactions, liveLastUpdat
         </div>
 
         {/* Amount raised */}
-        <div className="mt-12 border-y border-fj-border py-8 text-center">
-          <p className="text-xs uppercase tracking-wider text-fj-muted">{d.raisedSoFar}</p>
-          <p className="mt-2 text-3xl font-bold tabular-nums text-fj-dark sm:text-4xl" dir="ltr">
-            <span className="text-fj-muted font-normal">₩</span>{formatKRW(totalBalance)}
+        <div className="-mx-4 mt-12 rounded-xl bg-fj-surface px-4 py-10 text-center sm:-mx-6 sm:px-6">
+          <p className="text-xs uppercase tracking-wider text-fj-gold">{d.raisedSoFar}</p>
+          <p className="mt-3 text-3xl font-bold tabular-nums text-fj-dark sm:text-4xl" dir="ltr">
+            <span className="text-fj-gold/60 font-normal">₩</span>{formatKRW(totalBalance)}
           </p>
-          <p className="mt-2 text-xs text-fj-muted">
+          <div className="mx-auto mt-4 h-px w-12 bg-fj-gold/30" />
+          <p className="mt-4 text-xs text-fj-muted">
             {totalTxCount} {d.transactions} · {d.synced} {formatLastUpdated(lastUpdated)}
           </p>
         </div>
@@ -441,19 +323,11 @@ export function DonationLedger({ lang: pageLang, liveTransactions, liveLastUpdat
           </Tabs>
         </div>
 
-        {/* Account */}
-        <div className="mt-16 border-t border-fj-border pt-8 text-center">
-          <p className="text-sm text-fj-dark/70">{d.contribute}</p>
-          <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-lg border border-fj-border px-4 py-2.5">
-            <span className="text-xs text-fj-muted">NH</span>
-            <span className="text-sm tabular-nums font-semibold text-fj-dark">351-1397-5687-73</span>
-            <span className="text-xs text-fj-muted">파즈르제주 (Fajr Jeju)</span>
-            <CopyButton text="351139756873" copiedText={d.copied} copyText={d.copy} />
-          </div>
-        </div>
+        <p className="mt-6 text-center text-xs text-fj-dark/70">{d.privacy}</p>
+        <p className="mt-1 text-center text-xs text-fj-muted">{d.autoSync}</p>
 
         {/* Registration Certificate */}
-        <div className="mt-10 flex flex-col items-center gap-3">
+        <div className="mt-12 flex flex-col items-center gap-3">
           <div className="overflow-hidden rounded-lg border border-fj-border shadow-sm">
             <Image
               src="/images/donation/20260407_160627.jpg"
@@ -463,11 +337,22 @@ export function DonationLedger({ lang: pageLang, liveTransactions, liveLastUpdat
               className="w-full max-w-[400px]"
             />
           </div>
-          <p className="text-xs text-fj-muted">고유번호 654-80-03543</p>
+          <p className="text-xs text-fj-muted">{d.regCaption}</p>
         </div>
 
-        <p className="mt-6 text-center text-xs text-fj-dark/70">{d.privacy}</p>
-        <p className="mt-1 text-center text-xs text-fj-muted">{d.autoSync}</p>
+        {/* Account CTA */}
+        <div className="mt-10 border-t border-fj-border pt-8 text-center">
+          <p className="text-sm text-fj-dark/70">{d.contribute}</p>
+          <div className="mt-4 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-lg border border-fj-border px-4 py-2.5">
+            <span className="text-xs text-fj-muted">NH</span>
+            <span className="text-sm tabular-nums font-semibold text-fj-dark">351-1397-5687-73</span>
+            <span className="text-xs text-fj-muted">파즈르제주 (Fajr Jeju)</span>
+            <CopyButton text="351139756873" copiedText={d.copied} copyText={d.copy} />
+          </div>
+        </div>
+
+        {/* Closing */}
+        <p className="mt-10 text-center text-sm text-fj-dark/50">{d.closing}</p>
       </div>
     </section>
   );

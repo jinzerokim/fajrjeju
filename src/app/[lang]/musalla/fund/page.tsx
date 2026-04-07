@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { hasLocale } from "../../dictionaries";
+import { hasLocale, getDictionary } from "../../dictionaries";
 import { DonationLedger } from "@/components/donation-ledger";
 import { fetchBankTransactions } from "@/lib/bank-api";
 
@@ -21,11 +21,15 @@ export default async function FundPage({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
 
-  const bankData = await fetchBankTransactions();
+  const [dict, bankData] = await Promise.all([
+    getDictionary(lang),
+    fetchBankTransactions(),
+  ]);
 
   return (
     <DonationLedger
       lang={lang}
+      dict={dict.donation}
       liveTransactions={bankData?.transactions}
       liveLastUpdated={bankData?.lastUpdated}
     />
