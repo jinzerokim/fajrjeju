@@ -73,7 +73,7 @@ export function SiteHeader({ locale, musallaLabel }: { locale: Locale; musallaLa
                   return (
                     <DropdownMenuItem
                       key={l}
-                      className="group/lang cursor-pointer rounded-lg p-0 transition-all duration-150 focus:bg-fj-surface focus:text-fj-dark"
+                      className="group/lang cursor-pointer rounded-lg p-0 transition-all duration-150 focus-visible:bg-fj-surface focus-visible:text-fj-dark"
                     >
                       <Link
                         href={`/${l}${pathname.replace(`/${locale}`, "")}`}
