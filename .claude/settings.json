@@ -1,7 +1,8 @@
 {
   "permissions": {
     "additionalDirectories": [
-      "C:\\Users\\김진영\\.vscode\\Repo\\fajrjeju\\docs\\superpowers"
+      "C:\\Users\\김진영\\.vscode\\Repo\\fajrjeju\\docs\\superpowers",
+      "C:\\Users\\김진영\\.vscode\\Repo\\fajrjeju\\src\\app\\api\\bank"
     ]
   }
 }

@@ -25,9 +25,12 @@ export interface Transaction {
   type: "입금" | "출금";
 }
 
-const legacyLastUpdated = "2026-04-06T15:12:00";
+const legacyLastUpdated = "2026-04-09T11:03:00";
 
 const legacyTransactions: Transaction[] = [
+  { date: "2026-04-09", time: "11:03:00", description: "AKHTAR S***D", amount: 150000, balance: 5076000, type: "입금" },
+  { date: "2026-04-08", time: "19:47:00", description: "HAIDER", amount: 580000, balance: 4926000, type: "입금" },
+  { date: "2026-04-06", time: "21:54:00", description: "RAMZAN J***N", amount: 100000, balance: 4346000, type: "입금" },
   { date: "2026-04-06", time: "15:12:00", description: "RAZZAQ Z***H", amount: 50000, balance: 4246000, type: "입금" },
   { date: "2026-04-06", time: "00:26:00", description: "ALI M***SSA", amount: 500000, balance: 4196000, type: "\uc785\uae08" },
   { date: "2026-04-05", time: "22:04:00", description: "TALHA M***A", amount: 186000, balance: 3696000, type: "\uc785\uae08" },
