@@ -100,10 +100,31 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* ── Announcements — with subtle Islamic pattern ── */}
-      <section className="relative bg-fj-surface">
-        <div className="bg-pattern-islamic absolute inset-0 opacity-[0.35]" />
-        <div className="relative mx-auto max-w-6xl px-5 py-16 sm:py-20">
+      {/* ── Pyoseon Musalla Fund ── */}
+      <section className="bg-fj-surface">
+        <div className="mx-auto flex max-w-6xl flex-col items-start gap-6 px-5 py-12 sm:flex-row sm:items-center sm:justify-between sm:py-14">
+          <div className="max-w-xl">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-fj-gold-dark">
+              {dict.donation.title}
+            </p>
+            <h2 className="mt-2 text-xl font-bold text-fj-dark sm:text-2xl">{dict.fund.title}</h2>
+            <p className="mt-2 text-[14px] leading-relaxed text-fj-dark/70">{dict.fund.desc}</p>
+          </div>
+          <Link
+            href={`/${locale}/musalla/fund`}
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-fj-walnut/30 bg-fj-bg px-5 py-2.5 text-[13px] font-medium text-fj-walnut transition-colors hover:bg-fj-walnut hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fj-gold focus-visible:ring-offset-2"
+          >
+            {dict.fund.cta}
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+        </div>
+      </section>
+
+      {/* ── Announcements ── */}
+      <section className="bg-fj-bg">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
           <div className="flex items-center gap-3">
             <div className="h-px w-8 bg-fj-gold" />
             <h2 className="text-lg font-bold text-fj-dark">{dict.notices.title}</h2>
@@ -127,22 +148,6 @@ export default async function HomePage({
               tag={dict.notices.tagUpdate}
             />
           </div>
-        </div>
-      </section>
-
-      {/* ── Transparency Banner ── */}
-      <section className="bg-fj-bg">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-5 py-12 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div>
-            <h2 className="text-base font-bold text-fj-dark">{dict.fund.title}</h2>
-            <p className="mt-1 text-[14px] text-fj-dark/70">{dict.fund.desc}</p>
-          </div>
-          <Link
-            href={`/${locale}/musalla/fund`}
-            className="shrink-0 rounded-lg border border-fj-border bg-fj-bg px-5 py-2.5 text-[13px] font-medium text-fj-dark transition-colors hover:bg-fj-surface"
-          >
-            {dict.fund.cta} →
-          </Link>
         </div>
       </section>
     </>
