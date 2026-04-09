@@ -16,6 +16,7 @@ export type DonationDict = {
   transferLabel: string;
   brokerageFee: string;
   rentalDeposit: string;
+  yousafLateNote: string;
   manualUpdate: string;
   regCaption: string;
 };
@@ -29,6 +30,7 @@ export interface Transaction {
   type: "입금" | "출금";
   system?: boolean;
   noteKey?: "brokerageFee" | "rentalDeposit";
+  footnoteKey?: "yousafLate";
 }
 
 const fajrLastUpdated = "2026-04-09T18:45:00";
@@ -44,7 +46,7 @@ const fajrTransactions: Transaction[] = [
 const fajrBalance = fajrTransactions[0].balance;
 
 const legacyTransactions: Transaction[] = [
-  { date: "2026-04-09", time: "18:45:00", description: "YOUSAFM", amount: 100000, balance: 100000, type: "입금" },
+  { date: "2026-04-09", time: "18:45:00", description: "YOUSAFM", amount: 100000, balance: 100000, type: "입금", footnoteKey: "yousafLate" },
   { date: "2026-04-09", time: "12:00:00", description: "KHALID → Fajr Jeju", amount: 5076000, balance: 0, type: "출금", system: true },
   { date: "2026-04-09", time: "11:03:00", description: "AKHTAR S***D", amount: 150000, balance: 5076000, type: "입금" },
   { date: "2026-04-08", time: "19:47:00", description: "HAIDER", amount: 580000, balance: 4926000, type: "입금" },
@@ -111,10 +113,11 @@ function TransferIcon() {
   );
 }
 
-function TransactionRow({ tx, transferLabel, brokerageFee, rentalDeposit }: { tx: Transaction; transferLabel: string; brokerageFee: string; rentalDeposit: string }) {
+function TransactionRow({ tx, transferLabel, brokerageFee, rentalDeposit, yousafLateNote }: { tx: Transaction; transferLabel: string; brokerageFee: string; rentalDeposit: string; yousafLateNote: string }) {
   const isDeposit = tx.type === "\uc785\uae08";
   const isSystem = tx.system === true;
   const noteText = tx.noteKey === "brokerageFee" ? brokerageFee : tx.noteKey === "rentalDeposit" ? rentalDeposit : null;
+  const footnoteText = tx.footnoteKey === "yousafLate" ? yousafLateNote : null;
 
   if (isSystem) {
     return (
@@ -141,30 +144,37 @@ function TransactionRow({ tx, transferLabel, brokerageFee, rentalDeposit }: { tx
   }
 
   return (
-    <div className="flex items-center justify-between gap-4 py-3.5">
-      <div className="flex items-center gap-3 min-w-0">
-        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDeposit ? "bg-fj-teal/10 text-fj-teal" : "bg-fj-walnut/10 text-fj-walnut"}`}>
-          {isDeposit ? <DepositIcon /> : <WithdrawalIcon />}
+    <div className="py-3.5">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${isDeposit ? "bg-fj-teal/10 text-fj-teal" : "bg-fj-walnut/10 text-fj-walnut"}`}>
+            {isDeposit ? <DepositIcon /> : <WithdrawalIcon />}
+          </div>
+          <div className="min-w-0">
+            <p className="truncate text-sm text-fj-dark">
+              {tx.description}
+              {noteText && <span className="text-fj-muted"> · {noteText}</span>}
+            </p>
+            <p className="text-xs tabular-nums text-fj-muted">{tx.time.slice(0, 5)}</p>
+          </div>
         </div>
-        <div className="min-w-0">
-          <p className="truncate text-sm text-fj-dark">
-            {tx.description}
-            {noteText && <span className="text-fj-muted"> · {noteText}</span>}
-          </p>
-          <p className="text-xs tabular-nums text-fj-muted">{tx.time.slice(0, 5)}</p>
+        <div className="shrink-0 text-end" dir="ltr">
+          <span className={`text-sm font-semibold tabular-nums ${isDeposit ? "text-fj-teal" : "text-fj-walnut"}`}>
+            {isDeposit ? "+" : "−"}₩{formatKRW(tx.amount)}
+          </span>
+          <p className="text-[11px] tabular-nums text-fj-muted">₩{formatKRW(tx.balance)}</p>
         </div>
       </div>
-      <div className="shrink-0 text-end" dir="ltr">
-        <span className={`text-sm font-semibold tabular-nums ${isDeposit ? "text-fj-teal" : "text-fj-walnut"}`}>
-          {isDeposit ? "+" : "−"}₩{formatKRW(tx.amount)}
-        </span>
-        <p className="text-[11px] tabular-nums text-fj-muted">₩{formatKRW(tx.balance)}</p>
-      </div>
+      {footnoteText && (
+        <p className="ms-11 mt-1.5 text-[11px] italic leading-relaxed text-fj-muted">
+          {footnoteText}
+        </p>
+      )}
     </div>
   );
 }
 
-function TransactionList({ transactions, noTxText, transferLabel, brokerageFee, rentalDeposit }: { transactions: Transaction[]; noTxText: string; transferLabel: string; brokerageFee: string; rentalDeposit: string }) {
+function TransactionList({ transactions, noTxText, transferLabel, brokerageFee, rentalDeposit, yousafLateNote }: { transactions: Transaction[]; noTxText: string; transferLabel: string; brokerageFee: string; rentalDeposit: string; yousafLateNote: string }) {
   if (transactions.length === 0) {
     return <p className="py-12 text-center text-sm text-fj-dark/70">{noTxText}</p>;
   }
@@ -189,7 +199,7 @@ function TransactionList({ transactions, noTxText, transferLabel, brokerageFee, 
           </p>
           <div className="divide-y divide-fj-border/50">
             {group.txs.map((tx, i) => (
-              <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} transferLabel={transferLabel} brokerageFee={brokerageFee} rentalDeposit={rentalDeposit} />
+              <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} transferLabel={transferLabel} brokerageFee={brokerageFee} rentalDeposit={rentalDeposit} yousafLateNote={yousafLateNote} />
             ))}
           </div>
         </div>
@@ -349,20 +359,20 @@ export function DonationLedger({ lang, dict: d }: DonationLedgerProps) {
             <div className="mt-4">
               <TabsContent value="all">
                 <p className="pb-1 text-[11px] font-semibold uppercase tracking-wider text-fj-teal">{d.phase2Label}</p>
-                <TransactionList transactions={fajrTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} />
+                <TransactionList transactions={fajrTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
                 <div className="my-6 flex items-center gap-3">
                   <div className="h-px flex-1 bg-fj-border" />
                   <span className="text-[10px] uppercase tracking-widest text-fj-muted">{d.phase1Label}</span>
                   <div className="h-px flex-1 bg-fj-border" />
                 </div>
                 <p className="pb-2 text-center text-[11px] leading-relaxed text-fj-muted">{d.phase1Note}</p>
-                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} />
+                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
               </TabsContent>
               <TabsContent value="입금">
-                <TransactionList transactions={inflows} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} />
+                <TransactionList transactions={inflows} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
               </TabsContent>
               <TabsContent value="출금">
-                <TransactionList transactions={outflows} noTxText={d.noOutTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} />
+                <TransactionList transactions={outflows} noTxText={d.noOutTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
               </TabsContent>
             </div>
           </Tabs>
