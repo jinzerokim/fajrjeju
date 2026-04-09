@@ -365,7 +365,7 @@ export function DonationLedger({ lang, dict: d }: DonationLedgerProps) {
                   <span className="text-[10px] uppercase tracking-widest text-fj-muted">{d.phase1Label}</span>
                   <div className="h-px flex-1 bg-fj-border" />
                 </div>
-                <p className="pb-2 text-center text-[11px] leading-relaxed text-fj-muted">{d.phase1Note}</p>
+                <p className="whitespace-pre-line pb-2 text-center text-[11px] leading-relaxed text-fj-muted">{d.phase1Note}</p>
                 <TransactionList transactions={legacyTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
               </TabsContent>
               <TabsContent value="입금">
