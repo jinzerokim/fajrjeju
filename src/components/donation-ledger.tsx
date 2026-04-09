@@ -28,7 +28,7 @@ export interface Transaction {
 const legacyLastUpdated = "2026-04-09T17:30:00";
 
 const legacyTransactions: Transaction[] = [
-  { date: "2026-04-09", time: "17:30:00", description: "강*조 (중개수수료)", amount: 586000, balance: 90000, type: "출금" },
+  { date: "2026-04-09", time: "17:30:00", description: "강*조 (중개수수료)", amount: 579000, balance: 97000, type: "출금" },
   { date: "2026-04-09", time: "17:29:00", description: "전*순 (임대보증금)", amount: 5000000, balance: 676000, type: "출금" },
   { date: "2026-04-09", time: "17:26:00", description: "성*석", amount: 300000, balance: 5676000, type: "입금" },
   { date: "2026-04-09", time: "17:23:00", description: "김*영", amount: 300000, balance: 5376000, type: "입금" },
