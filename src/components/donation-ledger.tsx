@@ -14,6 +14,8 @@ export type DonationDict = {
   phase1Label: string; phase2Label: string;
   phase1Note: string;
   transferLabel: string;
+  brokerageFee: string;
+  rentalDeposit: string;
   manualUpdate: string;
   regCaption: string;
 };
@@ -26,13 +28,14 @@ export interface Transaction {
   balance: number;
   type: "입금" | "출금";
   system?: boolean;
+  noteKey?: "brokerageFee" | "rentalDeposit";
 }
 
-const fajrLastUpdated = "2026-04-09T17:30:00";
+const fajrLastUpdated = "2026-04-09T18:45:00";
 
 const fajrTransactions: Transaction[] = [
-  { date: "2026-04-09", time: "17:30:00", description: "강*조 (중개수수료)", amount: 579000, balance: 97000, type: "출금" },
-  { date: "2026-04-09", time: "17:29:00", description: "전*순 (임대보증금)", amount: 5000000, balance: 676000, type: "출금" },
+  { date: "2026-04-09", time: "17:30:00", description: "강*조", amount: 579000, balance: 97000, type: "출금", noteKey: "brokerageFee" },
+  { date: "2026-04-09", time: "17:29:00", description: "전*순", amount: 5000000, balance: 676000, type: "출금", noteKey: "rentalDeposit" },
   { date: "2026-04-09", time: "17:26:00", description: "성*석", amount: 300000, balance: 5676000, type: "입금" },
   { date: "2026-04-09", time: "17:23:00", description: "김*영", amount: 300000, balance: 5376000, type: "입금" },
   { date: "2026-04-09", time: "12:00:00", description: "KHALID", amount: 5076000, balance: 5076000, type: "입금", system: true },
@@ -41,6 +44,8 @@ const fajrTransactions: Transaction[] = [
 const fajrBalance = fajrTransactions[0].balance;
 
 const legacyTransactions: Transaction[] = [
+  { date: "2026-04-09", time: "18:45:00", description: "YOUSAFM", amount: 100000, balance: 100000, type: "입금" },
+  { date: "2026-04-09", time: "12:00:00", description: "KHALID → Fajr Jeju", amount: 5076000, balance: 0, type: "출금", system: true },
   { date: "2026-04-09", time: "11:03:00", description: "AKHTAR S***D", amount: 150000, balance: 5076000, type: "입금" },
   { date: "2026-04-08", time: "19:47:00", description: "HAIDER", amount: 580000, balance: 4926000, type: "입금" },
   { date: "2026-04-06", time: "21:54:00", description: "RAMZAN J***N", amount: 100000, balance: 4346000, type: "입금" },
@@ -106,9 +111,10 @@ function TransferIcon() {
   );
 }
 
-function TransactionRow({ tx, transferLabel }: { tx: Transaction; transferLabel: string }) {
+function TransactionRow({ tx, transferLabel, brokerageFee, rentalDeposit }: { tx: Transaction; transferLabel: string; brokerageFee: string; rentalDeposit: string }) {
   const isDeposit = tx.type === "\uc785\uae08";
   const isSystem = tx.system === true;
+  const noteText = tx.noteKey === "brokerageFee" ? brokerageFee : tx.noteKey === "rentalDeposit" ? rentalDeposit : null;
 
   if (isSystem) {
     return (
@@ -141,7 +147,10 @@ function TransactionRow({ tx, transferLabel }: { tx: Transaction; transferLabel:
           {isDeposit ? <DepositIcon /> : <WithdrawalIcon />}
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm text-fj-dark">{tx.description}</p>
+          <p className="truncate text-sm text-fj-dark">
+            {tx.description}
+            {noteText && <span className="text-fj-muted"> · {noteText}</span>}
+          </p>
           <p className="text-xs tabular-nums text-fj-muted">{tx.time.slice(0, 5)}</p>
         </div>
       </div>
@@ -155,7 +164,7 @@ function TransactionRow({ tx, transferLabel }: { tx: Transaction; transferLabel:
   );
 }
 
-function TransactionList({ transactions, noTxText, transferLabel }: { transactions: Transaction[]; noTxText: string; transferLabel: string }) {
+function TransactionList({ transactions, noTxText, transferLabel, brokerageFee, rentalDeposit }: { transactions: Transaction[]; noTxText: string; transferLabel: string; brokerageFee: string; rentalDeposit: string }) {
   if (transactions.length === 0) {
     return <p className="py-12 text-center text-sm text-fj-dark/70">{noTxText}</p>;
   }
@@ -180,7 +189,7 @@ function TransactionList({ transactions, noTxText, transferLabel }: { transactio
           </p>
           <div className="divide-y divide-fj-border/50">
             {group.txs.map((tx, i) => (
-              <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} transferLabel={transferLabel} />
+              <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} transferLabel={transferLabel} brokerageFee={brokerageFee} rentalDeposit={rentalDeposit} />
             ))}
           </div>
         </div>
@@ -216,7 +225,8 @@ export function DonationLedger({ lang, dict: d }: DonationLedgerProps) {
   const isRtl = lang === "ur" || lang === "ar";
 
   const allTransactions = [...fajrTransactions, ...legacyTransactions];
-  const totalBalance = fajrBalance;
+  const legacyPendingBalance = legacyTransactions[0].balance;
+  const totalBalance = fajrBalance + legacyPendingBalance;
   const donationCount = allTransactions.filter((tx) => tx.type === "입금" && !tx.system).length;
   const lastUpdated = fajrLastUpdated;
   const inflows = allTransactions.filter((tx) => tx.type === "입금" && !tx.system);
@@ -339,20 +349,20 @@ export function DonationLedger({ lang, dict: d }: DonationLedgerProps) {
             <div className="mt-4">
               <TabsContent value="all">
                 <p className="pb-1 text-[11px] font-semibold uppercase tracking-wider text-fj-teal">{d.phase2Label}</p>
-                <TransactionList transactions={fajrTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} />
+                <TransactionList transactions={fajrTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} />
                 <div className="my-6 flex items-center gap-3">
                   <div className="h-px flex-1 bg-fj-border" />
                   <span className="text-[10px] uppercase tracking-widest text-fj-muted">{d.phase1Label}</span>
                   <div className="h-px flex-1 bg-fj-border" />
                 </div>
                 <p className="pb-2 text-center text-[11px] leading-relaxed text-fj-muted">{d.phase1Note}</p>
-                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} />
+                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} />
               </TabsContent>
               <TabsContent value="입금">
-                <TransactionList transactions={inflows} noTxText={d.noTx} transferLabel={d.transferLabel} />
+                <TransactionList transactions={inflows} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} />
               </TabsContent>
               <TabsContent value="출금">
-                <TransactionList transactions={outflows} noTxText={d.noOutTx} transferLabel={d.transferLabel} />
+                <TransactionList transactions={outflows} noTxText={d.noOutTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} />
               </TabsContent>
             </div>
           </Tabs>
