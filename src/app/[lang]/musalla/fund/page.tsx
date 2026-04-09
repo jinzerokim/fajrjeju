@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { hasLocale, getDictionary } from "../../dictionaries";
 import { DonationLedger } from "@/components/donation-ledger";
-import { fetchBankTransactions } from "@/lib/bank-api";
 
 export const metadata: Metadata = {
   title: "Pyoseon Musalla Fund — Donation Transparency",
@@ -21,17 +20,7 @@ export default async function FundPage({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
 
-  const [dict, bankData] = await Promise.all([
-    getDictionary(lang),
-    fetchBankTransactions(),
-  ]);
+  const dict = await getDictionary(lang);
 
-  return (
-    <DonationLedger
-      lang={lang}
-      dict={dict.donation}
-      liveTransactions={bankData?.transactions}
-      liveLastUpdated={bankData?.lastUpdated}
-    />
-  );
+  return <DonationLedger lang={lang} dict={dict.donation} />;
 }

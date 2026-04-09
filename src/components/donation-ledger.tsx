@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 export type DonationDict = {
@@ -12,7 +11,10 @@ export type DonationDict = {
   transactions: string; synced: string; all: string; in: string; out: string;
   noTx: string; noOutTx: string; contribute: string; privacy: string; copied: string; copy: string; closing: string;
   specs: { land: string; floor: string; floor1: string; south: string };
-  phase1Label: string; phase2Label: string; live: string; autoSync: string;
+  phase1Label: string; phase2Label: string;
+  phase1Note: string;
+  transferLabel: string;
+  manualUpdate: string;
   regCaption: string;
 };
 
@@ -23,15 +25,22 @@ export interface Transaction {
   amount: number;
   balance: number;
   type: "입금" | "출금";
+  system?: boolean;
 }
 
-const legacyLastUpdated = "2026-04-09T17:30:00";
+const fajrLastUpdated = "2026-04-09T17:30:00";
 
-const legacyTransactions: Transaction[] = [
+const fajrTransactions: Transaction[] = [
   { date: "2026-04-09", time: "17:30:00", description: "강*조 (중개수수료)", amount: 579000, balance: 97000, type: "출금" },
   { date: "2026-04-09", time: "17:29:00", description: "전*순 (임대보증금)", amount: 5000000, balance: 676000, type: "출금" },
   { date: "2026-04-09", time: "17:26:00", description: "성*석", amount: 300000, balance: 5676000, type: "입금" },
   { date: "2026-04-09", time: "17:23:00", description: "김*영", amount: 300000, balance: 5376000, type: "입금" },
+  { date: "2026-04-09", time: "12:00:00", description: "KHALID", amount: 5076000, balance: 5076000, type: "입금", system: true },
+];
+
+const fajrBalance = fajrTransactions[0].balance;
+
+const legacyTransactions: Transaction[] = [
   { date: "2026-04-09", time: "11:03:00", description: "AKHTAR S***D", amount: 150000, balance: 5076000, type: "입금" },
   { date: "2026-04-08", time: "19:47:00", description: "HAIDER", amount: 580000, balance: 4926000, type: "입금" },
   { date: "2026-04-06", time: "21:54:00", description: "RAMZAN J***N", amount: 100000, balance: 4346000, type: "입금" },
@@ -58,8 +67,6 @@ const legacyTransactions: Transaction[] = [
   { date: "2026-04-02", time: "23:11:00", description: "ZAMAN Q***A", amount: 100000, balance: 300000, type: "\uc785\uae08" },
   { date: "2026-04-02", time: "23:04:00", description: "BILAL M***A", amount: 200000, balance: 200000, type: "\uc785\uae08" },
 ];
-
-const legacyBalance = legacyTransactions[0].balance;
 
 function formatKRW(n: number) {
   return new Intl.NumberFormat("ko-KR").format(n);
@@ -91,8 +98,41 @@ function WithdrawalIcon() {
   );
 }
 
-function TransactionRow({ tx }: { tx: Transaction }) {
+function TransferIcon() {
+  return (
+    <svg aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+      <path d="m16 3 4 4-4 4" /><path d="M20 7H4" /><path d="m8 21-4-4 4-4" /><path d="M4 17h16" />
+    </svg>
+  );
+}
+
+function TransactionRow({ tx, transferLabel }: { tx: Transaction; transferLabel: string }) {
   const isDeposit = tx.type === "\uc785\uae08";
+  const isSystem = tx.system === true;
+
+  if (isSystem) {
+    return (
+      <div className="flex items-center justify-between gap-4 py-3.5">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-fj-muted/15 text-fj-muted">
+            <TransferIcon />
+          </div>
+          <div className="min-w-0">
+            <p className="truncate text-sm text-fj-dark/80">
+              {tx.description} <span className="text-fj-muted">· {transferLabel}</span>
+            </p>
+            <p className="text-xs tabular-nums text-fj-muted">{tx.time.slice(0, 5)}</p>
+          </div>
+        </div>
+        <div className="shrink-0 text-end" dir="ltr">
+          <span className="text-sm font-medium tabular-nums text-fj-muted">
+            ₩{formatKRW(tx.amount)}
+          </span>
+          <p className="text-[11px] tabular-nums text-fj-muted/70">₩{formatKRW(tx.balance)}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-between gap-4 py-3.5">
@@ -115,7 +155,7 @@ function TransactionRow({ tx }: { tx: Transaction }) {
   );
 }
 
-function TransactionList({ transactions, noTxText }: { transactions: Transaction[]; noTxText: string }) {
+function TransactionList({ transactions, noTxText, transferLabel }: { transactions: Transaction[]; noTxText: string; transferLabel: string }) {
   if (transactions.length === 0) {
     return <p className="py-12 text-center text-sm text-fj-dark/70">{noTxText}</p>;
   }
@@ -140,7 +180,7 @@ function TransactionList({ transactions, noTxText }: { transactions: Transaction
           </p>
           <div className="divide-y divide-fj-border/50">
             {group.txs.map((tx, i) => (
-              <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} />
+              <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} transferLabel={transferLabel} />
             ))}
           </div>
         </div>
@@ -170,20 +210,17 @@ function CopyButton({ text, copiedText, copyText }: { text: string; copiedText: 
 interface DonationLedgerProps {
   lang: string;
   dict: DonationDict;
-  liveTransactions?: Transaction[];
-  liveLastUpdated?: string;
 }
 
-export function DonationLedger({ lang, dict: d, liveTransactions, liveLastUpdated }: DonationLedgerProps) {
+export function DonationLedger({ lang, dict: d }: DonationLedgerProps) {
   const isRtl = lang === "ur" || lang === "ar";
 
-  const allTransactions = [...(liveTransactions ?? []), ...legacyTransactions];
-  const totalBalance = liveTransactions?.length
-    ? (liveTransactions[0].balance + legacyBalance)
-    : legacyBalance;
-  const totalTxCount = allTransactions.length;
-  const lastUpdated = liveLastUpdated ?? legacyLastUpdated;
-  const hasLive = liveTransactions && liveTransactions.length > 0;
+  const allTransactions = [...fajrTransactions, ...legacyTransactions];
+  const totalBalance = fajrBalance;
+  const donationCount = allTransactions.filter((tx) => tx.type === "입금" && !tx.system).length;
+  const lastUpdated = fajrLastUpdated;
+  const inflows = allTransactions.filter((tx) => tx.type === "입금" && !tx.system);
+  const outflows = allTransactions.filter((tx) => tx.type === "출금" && !tx.system);
 
   return (
     <section className="py-16 sm:py-24" dir={isRtl ? "rtl" : "ltr"}>
@@ -285,7 +322,7 @@ export function DonationLedger({ lang, dict: d, liveTransactions, liveLastUpdate
           </p>
           <div className="mx-auto mt-4 h-px w-12 bg-fj-gold/30" />
           <p className="mt-4 text-xs text-fj-muted">
-            {totalTxCount} {d.transactions} · {d.synced} {formatLastUpdated(lastUpdated)}
+            {donationCount} {d.transactions} · {d.synced} {formatLastUpdated(lastUpdated)}
           </p>
         </div>
 
@@ -298,40 +335,31 @@ export function DonationLedger({ lang, dict: d, liveTransactions, liveLastUpdate
                 <TabsTrigger value="입금">{d.in}</TabsTrigger>
                 <TabsTrigger value="출금">{d.out}</TabsTrigger>
               </TabsList>
-              {hasLive && (
-                <Badge variant="outline" className="gap-1 text-xs tabular-nums">
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  {d.live}
-                </Badge>
-              )}
             </div>
             <div className="mt-4">
               <TabsContent value="all">
-                {hasLive && (
-                  <>
-                    <p className="pb-1 text-[11px] font-semibold uppercase tracking-wider text-fj-teal">{d.phase2Label}</p>
-                    <TransactionList transactions={liveTransactions} noTxText={d.noTx} />
-                    <div className="my-6 flex items-center gap-3">
-                      <div className="h-px flex-1 bg-fj-border" />
-                      <span className="text-[10px] uppercase tracking-widest text-fj-muted">{d.phase1Label}</span>
-                      <div className="h-px flex-1 bg-fj-border" />
-                    </div>
-                  </>
-                )}
-                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} />
+                <p className="pb-1 text-[11px] font-semibold uppercase tracking-wider text-fj-teal">{d.phase2Label}</p>
+                <TransactionList transactions={fajrTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} />
+                <div className="my-6 flex items-center gap-3">
+                  <div className="h-px flex-1 bg-fj-border" />
+                  <span className="text-[10px] uppercase tracking-widest text-fj-muted">{d.phase1Label}</span>
+                  <div className="h-px flex-1 bg-fj-border" />
+                </div>
+                <p className="pb-2 text-center text-[11px] leading-relaxed text-fj-muted">{d.phase1Note}</p>
+                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} />
               </TabsContent>
               <TabsContent value="입금">
-                <TransactionList transactions={allTransactions.filter((tx) => tx.type === "입금")} noTxText={d.noTx} />
+                <TransactionList transactions={inflows} noTxText={d.noTx} transferLabel={d.transferLabel} />
               </TabsContent>
               <TabsContent value="출금">
-                <TransactionList transactions={allTransactions.filter((tx) => tx.type === "출금")} noTxText={d.noOutTx} />
+                <TransactionList transactions={outflows} noTxText={d.noOutTx} transferLabel={d.transferLabel} />
               </TabsContent>
             </div>
           </Tabs>
         </div>
 
         <p className="mt-6 text-center text-xs text-fj-dark/70">{d.privacy}</p>
-        <p className="mt-1 text-center text-xs text-fj-muted">{d.autoSync}</p>
+        <p className="mt-1 text-center text-xs text-fj-muted">{d.manualUpdate}</p>
 
         {/* Registration Certificate */}
         <div className="mt-12 flex flex-col items-center gap-3">

@@ -73,8 +73,9 @@
     "specs": { "land": "대지 601m²", "floor": "58.9m²", "floor1": "1층", "south": "남향" },
     "phase1Label": "1단계 — 칼리드 대리 수금",
     "phase2Label": "파즈르제주 계좌",
-    "live": "실시간",
-    "autoSync": "은행과 5분 간격으로 자동 동기화됩니다.",
+    "phase1Note": "파즈르제주 계좌 개설 전 대리 수금된 후원금입니다. 전액 위 계좌로 이체 완료되었습니다.",
+    "transferLabel": "1단계 통합 이체",
+    "manualUpdate": "매일 저녁 수동으로 업데이트됩니다.",
     "regCaption": "고유번호 654-80-03543"
   },
   "musalla": {

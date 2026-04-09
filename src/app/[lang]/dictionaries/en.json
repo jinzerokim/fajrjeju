@@ -73,8 +73,9 @@
     "specs": { "land": "601m² lot", "floor": "58.9m²", "floor1": "1F", "south": "South-facing" },
     "phase1Label": "Phase 1 — Collected by Khalid",
     "phase2Label": "Fajr Jeju Account",
-    "live": "Live",
-    "autoSync": "Auto-synced with the bank every 5 minutes.",
+    "phase1Note": "Donations collected before the Fajr Jeju account opened. The full amount has been transferred into the account above.",
+    "transferLabel": "Phase 1 transfer",
+    "manualUpdate": "Manually updated every evening.",
     "regCaption": "Reg. No. 654-80-03543"
   },
   "musalla": {
