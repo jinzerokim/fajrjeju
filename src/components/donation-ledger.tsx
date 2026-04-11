@@ -16,6 +16,7 @@ export type DonationDict = {
   transferLabel: string;
   brokerageFee: string;
   rentalDeposit: string;
+  transferFee: string;
   yousafLateNote: string;
   manualUpdate: string;
   regCaption: string;
@@ -29,34 +30,40 @@ export interface Transaction {
   balance: number;
   type: "입금" | "출금";
   system?: boolean;
-  noteKey?: "brokerageFee" | "rentalDeposit";
+  noteKey?: "brokerageFee" | "rentalDeposit" | "transferFee";
   footnoteKey?: "yousafLate";
 }
 
-const fajrLastUpdated = "2026-04-09T18:45:00";
+const fajrLastUpdated = "2026-04-10T07:25:44";
 
 const fajrTransactions: Transaction[] = [
-  { date: "2026-04-09", time: "17:30:00", description: "강*조", amount: 579000, balance: 97000, type: "출금", noteKey: "brokerageFee" },
-  { date: "2026-04-09", time: "17:29:00", description: "전*순", amount: 5000000, balance: 676000, type: "출금", noteKey: "rentalDeposit" },
-  { date: "2026-04-09", time: "17:26:00", description: "성*석", amount: 300000, balance: 5676000, type: "입금" },
-  { date: "2026-04-09", time: "17:23:00", description: "김*영", amount: 300000, balance: 5376000, type: "입금" },
-  { date: "2026-04-09", time: "12:00:00", description: "KHALID", amount: 5076000, balance: 5076000, type: "입금", system: true },
+  { date: "2026-04-10", time: "07:25:44", description: "H***A", amount: 2000, balance: 358612, type: "입금" },
+  { date: "2026-04-10", time: "01:49:39", description: "A***i", amount: 111111, balance: 356612, type: "입금" },
+  { date: "2026-04-09", time: "23:08:34", description: "K***I", amount: 20000, balance: 245501, type: "입금" },
+  { date: "2026-04-09", time: "22:58:42", description: "K***D", amount: 10000, balance: 225501, type: "입금" },
+  { date: "2026-04-09", time: "21:54:19", description: "S***A", amount: 10000, balance: 215501, type: "입금" },
+  { date: "2026-04-09", time: "17:30:00", description: "강*조", amount: 579000, balance: 205501, type: "출금", noteKey: "brokerageFee" },
+  { date: "2026-04-09", time: "17:29:00", description: "전*순", amount: 5000000, balance: 784501, type: "출금", noteKey: "rentalDeposit" },
+  { date: "2026-04-09", time: "17:26:00", description: "성*석", amount: 300000, balance: 5784501, type: "입금" },
+  { date: "2026-04-09", time: "17:23:00", description: "김*영", amount: 300000, balance: 5484501, type: "입금" },
+  { date: "2026-04-09", time: "12:01:00", description: "", amount: 499, balance: 5184501, type: "출금", noteKey: "transferFee" },
+  { date: "2026-04-09", time: "12:00:00", description: "KHALID", amount: 5185000, balance: 5185000, type: "입금", system: true },
 ];
 
 const fajrBalance = fajrTransactions[0].balance;
 
 const legacyTransactions: Transaction[] = [
-  { date: "2026-04-09", time: "18:45:00", description: "YOUSAFM", amount: 100000, balance: 100000, type: "입금", footnoteKey: "yousafLate" },
-  { date: "2026-04-09", time: "12:00:00", description: "KHALID → Fajr Jeju", amount: 5076000, balance: 0, type: "출금", system: true },
+  { date: "2026-04-09", time: "20:00:00", description: "KHALID → Fajr Jeju", amount: 5176000, balance: 0, type: "출금", system: true },
+  { date: "2026-04-09", time: "18:45:00", description: "Y***M", amount: 100000, balance: 5176000, type: "입금" },
   { date: "2026-04-09", time: "11:03:00", description: "AKHTAR S***D", amount: 150000, balance: 5076000, type: "입금" },
-  { date: "2026-04-08", time: "19:47:00", description: "HAIDER", amount: 580000, balance: 4926000, type: "입금" },
+  { date: "2026-04-08", time: "19:47:00", description: "H***R", amount: 580000, balance: 4926000, type: "입금" },
   { date: "2026-04-06", time: "21:54:00", description: "RAMZAN J***N", amount: 100000, balance: 4346000, type: "입금" },
   { date: "2026-04-06", time: "15:12:00", description: "RAZZAQ Z***H", amount: 50000, balance: 4246000, type: "입금" },
-  { date: "2026-04-06", time: "00:26:00", description: "ALI M***SSA", amount: 500000, balance: 4196000, type: "\uc785\uae08" },
-  { date: "2026-04-05", time: "22:04:00", description: "TALHA M***A", amount: 186000, balance: 3696000, type: "\uc785\uae08" },
+  { date: "2026-04-05", time: "22:04:00", description: "ALI M***A", amount: 500000, balance: 4196000, type: "입금" },
+  { date: "2026-04-05", time: "22:03:00", description: "TALHA M***A", amount: 186000, balance: 3696000, type: "입금" },
   { date: "2026-04-05", time: "19:37:00", description: "KHURSHID S***A", amount: 200000, balance: 3510000, type: "\uc785\uae08" },
   { date: "2026-04-05", time: "17:39:00", description: "AKHTAR S***H", amount: 100000, balance: 3310000, type: "\uc785\uae08" },
-  { date: "2026-04-05", time: "17:24:00", description: "ZAHID", amount: 20000, balance: 3210000, type: "\uc785\uae08" },
+  { date: "2026-04-05", time: "17:24:00", description: "Z***D", amount: 20000, balance: 3210000, type: "\uc785\uae08" },
   { date: "2026-04-05", time: "11:32:00", description: "ALI M***A", amount: 100000, balance: 3190000, type: "\uc785\uae08" },
   { date: "2026-04-05", time: "10:44:00", description: "HASSAN F***R", amount: 50000, balance: 3090000, type: "\uc785\uae08" },
   { date: "2026-04-05", time: "03:01:00", description: "RAMZAN J***N", amount: 100000, balance: 3040000, type: "\uc785\uae08" },
@@ -68,7 +75,7 @@ const legacyTransactions: Transaction[] = [
   { date: "2026-04-04", time: "22:58:00", description: "KHAN K***I", amount: 1000000, balance: 2200000, type: "\uc785\uae08" },
   { date: "2026-04-04", time: "22:56:00", description: "AMIN Z***I", amount: 100000, balance: 1200000, type: "\uc785\uae08" },
   { date: "2026-04-04", time: "17:20:00", description: "NAZIR I***N", amount: 200000, balance: 1100000, type: "\uc785\uae08" },
-  { date: "2026-04-03", time: "08:21:00", description: "\uc54c*\uce74\uc2ec", amount: 500000, balance: 900000, type: "\uc785\uae08" },
+  { date: "2026-04-03", time: "08:21:00", description: "알*심", amount: 500000, balance: 900000, type: "입금" },
   { date: "2026-04-02", time: "23:47:00", description: "AMIN Z***H", amount: 50000, balance: 400000, type: "\uc785\uae08" },
   { date: "2026-04-02", time: "23:18:00", description: "YASEEN M***F", amount: 50000, balance: 350000, type: "\uc785\uae08" },
   { date: "2026-04-02", time: "23:11:00", description: "ZAMAN Q***A", amount: 100000, balance: 300000, type: "\uc785\uae08" },
@@ -113,10 +120,10 @@ function TransferIcon() {
   );
 }
 
-function TransactionRow({ tx, transferLabel, brokerageFee, rentalDeposit, yousafLateNote }: { tx: Transaction; transferLabel: string; brokerageFee: string; rentalDeposit: string; yousafLateNote: string }) {
+function TransactionRow({ tx, transferLabel, brokerageFee, rentalDeposit, transferFee, yousafLateNote }: { tx: Transaction; transferLabel: string; brokerageFee: string; rentalDeposit: string; transferFee: string; yousafLateNote: string }) {
   const isDeposit = tx.type === "\uc785\uae08";
   const isSystem = tx.system === true;
-  const noteText = tx.noteKey === "brokerageFee" ? brokerageFee : tx.noteKey === "rentalDeposit" ? rentalDeposit : null;
+  const noteText = tx.noteKey === "brokerageFee" ? brokerageFee : tx.noteKey === "rentalDeposit" ? rentalDeposit : tx.noteKey === "transferFee" ? transferFee : null;
   const footnoteText = tx.footnoteKey === "yousafLate" ? yousafLateNote : null;
 
   if (isSystem) {
@@ -152,8 +159,8 @@ function TransactionRow({ tx, transferLabel, brokerageFee, rentalDeposit, yousaf
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm text-fj-dark">
-              {tx.description}
-              {noteText && <span className="text-fj-muted"> · {noteText}</span>}
+              {tx.description ? tx.description : noteText}
+              {tx.description && noteText && <span className="text-fj-muted"> · {noteText}</span>}
             </p>
             <p className="text-xs tabular-nums text-fj-muted">{tx.time.slice(0, 5)}</p>
           </div>
@@ -174,7 +181,7 @@ function TransactionRow({ tx, transferLabel, brokerageFee, rentalDeposit, yousaf
   );
 }
 
-function TransactionList({ transactions, noTxText, transferLabel, brokerageFee, rentalDeposit, yousafLateNote }: { transactions: Transaction[]; noTxText: string; transferLabel: string; brokerageFee: string; rentalDeposit: string; yousafLateNote: string }) {
+function TransactionList({ transactions, noTxText, transferLabel, brokerageFee, rentalDeposit, transferFee, yousafLateNote }: { transactions: Transaction[]; noTxText: string; transferLabel: string; brokerageFee: string; rentalDeposit: string; transferFee: string; yousafLateNote: string }) {
   if (transactions.length === 0) {
     return <p className="py-12 text-center text-sm text-fj-dark/70">{noTxText}</p>;
   }
@@ -199,7 +206,7 @@ function TransactionList({ transactions, noTxText, transferLabel, brokerageFee, 
           </p>
           <div className="divide-y divide-fj-border/50">
             {group.txs.map((tx, i) => (
-              <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} transferLabel={transferLabel} brokerageFee={brokerageFee} rentalDeposit={rentalDeposit} yousafLateNote={yousafLateNote} />
+              <TransactionRow key={`${tx.date}-${tx.time}-${i}`} tx={tx} transferLabel={transferLabel} brokerageFee={brokerageFee} rentalDeposit={rentalDeposit} transferFee={transferFee} yousafLateNote={yousafLateNote} />
             ))}
           </div>
         </div>
@@ -359,20 +366,20 @@ export function DonationLedger({ lang, dict: d }: DonationLedgerProps) {
             <div className="mt-4">
               <TabsContent value="all">
                 <p className="pb-1 text-[11px] font-semibold uppercase tracking-wider text-fj-teal">{d.phase2Label}</p>
-                <TransactionList transactions={fajrTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
+                <TransactionList transactions={fajrTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} transferFee={d.transferFee} yousafLateNote={d.yousafLateNote} />
                 <div className="my-6 flex items-center gap-3">
                   <div className="h-px flex-1 bg-fj-border" />
                   <span className="text-[10px] uppercase tracking-widest text-fj-muted">{d.phase1Label}</span>
                   <div className="h-px flex-1 bg-fj-border" />
                 </div>
                 <p className="whitespace-pre-line pb-2 text-center text-[11px] leading-relaxed text-fj-muted">{d.phase1Note}</p>
-                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
+                <TransactionList transactions={legacyTransactions} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} transferFee={d.transferFee} yousafLateNote={d.yousafLateNote} />
               </TabsContent>
               <TabsContent value="입금">
-                <TransactionList transactions={inflows} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
+                <TransactionList transactions={inflows} noTxText={d.noTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} transferFee={d.transferFee} yousafLateNote={d.yousafLateNote} />
               </TabsContent>
               <TabsContent value="출금">
-                <TransactionList transactions={outflows} noTxText={d.noOutTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} yousafLateNote={d.yousafLateNote} />
+                <TransactionList transactions={outflows} noTxText={d.noOutTx} transferLabel={d.transferLabel} brokerageFee={d.brokerageFee} rentalDeposit={d.rentalDeposit} transferFee={d.transferFee} yousafLateNote={d.yousafLateNote} />
               </TabsContent>
             </div>
           </Tabs>

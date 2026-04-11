@@ -77,7 +77,8 @@
     "transferLabel": "Transfer Tahap 1",
     "brokerageFee": "Komisi makelar",
     "rentalDeposit": "Deposit sewa",
-    "yousafLateNote": "Masuk ke rekening Saudara Khalid setelah transfer total Tahap 1. Akan diteruskan ke rekening Fajr Jeju pada transfer berikutnya.",
+    "transferFee": "Biaya transfer",
+    "yousafLateNote": "Masuk ke rekening Saudara Khalid setelah transfer total Tahap 1, dan telah diteruskan ke rekening Fajr Jeju.",
     "manualUpdate": "Diperbarui secara manual setiap malam.",
     "regCaption": "No. Reg. 654-80-03543"
   },
