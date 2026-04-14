@@ -22,7 +22,7 @@ export default async function Icon() {
           color: "#C4A265",
           letterSpacing: -1,
           lineHeight: 1,
-          paddingBottom: 2,
+          paddingTop: 4,
         }}
       >
         FJ
