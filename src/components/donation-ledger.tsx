@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 export type DonationDict = {
   title: string; desc: string; location: string; leasing: string; inside: string;
   sistersArea: string; restroomsLabel: string; restroomsDesc: string;
-  kitchenLabel: string; busStops: string; qibla: string; raisedSoFar: string;
+  kitchenLabel: string; busStops: string; qibla: string; currentBalance: string; totalRaised: string;
   transactions: string; synced: string; all: string; in: string; out: string;
   noTx: string; noOutTx: string; contribute: string; privacy: string; copied: string; copy: string; closing: string;
   specs: { land: string; floor: string; floor1: string; south: string };
@@ -250,6 +250,7 @@ export function DonationLedger({ lang, dict: d }: DonationLedgerProps) {
   const donationCount = allTransactions.filter((tx) => tx.type === "입금" && !tx.system).length;
   const lastUpdated = fajrLastUpdated;
   const inflows = allTransactions.filter((tx) => tx.type === "입금" && !tx.system);
+  const totalRaised = inflows.reduce((sum, tx) => sum + tx.amount, 0);
   const outflows = allTransactions.filter((tx) => tx.type === "출금" && !tx.system);
 
   return (
@@ -344,14 +345,17 @@ export function DonationLedger({ lang, dict: d }: DonationLedgerProps) {
           </div>
         </div>
 
-        {/* Amount raised */}
+        {/* Current balance (main) + cumulative raised (secondary) */}
         <div className="-mx-4 mt-12 rounded-xl bg-fj-surface px-4 py-10 text-center sm:-mx-6 sm:px-6">
-          <p className="text-xs uppercase tracking-wider text-fj-gold">{d.raisedSoFar}</p>
+          <p className="text-xs uppercase tracking-wider text-fj-gold">{d.currentBalance}</p>
           <p className="mt-3 text-3xl font-bold tabular-nums text-fj-dark sm:text-4xl" dir="ltr">
             <span className="text-fj-gold/60 font-normal">₩</span>{formatKRW(totalBalance)}
           </p>
           <div className="mx-auto mt-4 h-px w-12 bg-fj-gold/30" />
           <p className="mt-4 text-xs text-fj-muted">
+            {d.totalRaised} <span className="tabular-nums text-fj-dark/80" dir="ltr">₩{formatKRW(totalRaised)}</span>
+          </p>
+          <p className="mt-1.5 text-xs text-fj-muted">
             {donationCount} {d.transactions} · {d.synced} {formatLastUpdated(lastUpdated)}
           </p>
         </div>
