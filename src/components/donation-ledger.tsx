@@ -35,9 +35,16 @@ export interface Transaction {
   footnoteKey?: "yousafLate";
 }
 
-const fajrLastUpdated = "2026-04-17T17:20:28";
+const fajrLastUpdated = "2026-04-19T15:50:43";
 
 const fajrTransactions: Transaction[] = [
+  { date: "2026-04-19", time: "15:50:43", description: "한패스 H***", amount: 50000, balance: 1023613, type: "입금" },
+  { date: "2026-04-19", time: "15:44:26", description: "ABUBAKER M***", amount: 15000, balance: 973613, type: "입금" },
+  { date: "2026-04-19", time: "13:34:05", description: "SHAFIQ U***", amount: 30000, balance: 958613, type: "입금" },
+  { date: "2026-04-19", time: "12:04:09", description: "JUNAID M***", amount: 20000, balance: 928613, type: "입금" },
+  { date: "2026-04-19", time: "11:28:48", description: "MEHMOOD M***", amount: 20000, balance: 908613, type: "입금" },
+  { date: "2026-04-18", time: "16:26:00", description: "ALI A***", amount: 20000, balance: 888613, type: "입금" },
+  { date: "2026-04-18", time: "12:18:12", description: "ALI K***", amount: 30000, balance: 868613, type: "입금" },
   { date: "2026-04-17", time: "17:20:28", description: "ForMosque", amount: 90000, balance: 818613, type: "입금" },
   { date: "2026-04-17", time: "17:16:08", description: "RASHEED H***", amount: 10000, balance: 728613, type: "입금" },
   { date: "2026-04-17", time: "16:29:18", description: "AHMAD A***", amount: 20000, balance: 718613, type: "입금" },
