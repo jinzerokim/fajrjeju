@@ -35,9 +35,10 @@ export interface Transaction {
   footnoteKey?: "yousafLate";
 }
 
-const fajrLastUpdated = "2026-04-22T04:12:53";
+const fajrLastUpdated = "2026-04-28T20:13:49";
 
 const fajrTransactions: Transaction[] = [
+  { date: "2026-04-28", time: "20:13:49", description: "MERYEM T***", amount: 511550, balance: 1693163, type: "입금" },
   { date: "2026-04-22", time: "04:12:53", description: "KHAN K***", amount: 30000, balance: 1181613, type: "입금" },
   { date: "2026-04-21", time: "11:40:26", description: "JAMIL A***", amount: 20000, balance: 1151613, type: "입금" },
   { date: "2026-04-20", time: "22:29:27", description: "ARSLAN M***", amount: 78000, balance: 1131613, type: "입금" },
